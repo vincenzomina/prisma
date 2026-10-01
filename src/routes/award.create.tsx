@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState, type ReactNode } from "react";
 import { AppShell } from "@/components/prisma/AppShell";
-import { createDraftAward, looksLikeSolanaAddress } from "@/lib/awards/logic";
+import { createDraftAward, isValidSolanaAddress } from "@/lib/awards/logic";
 import { saveAward } from "@/lib/awards/store";
 import { AWARD_TYPE_LABELS, REWARD_TYPE_LABELS, type AwardType, type RewardType } from "@/lib/awards/types";
 
@@ -70,7 +70,8 @@ function CreateAward() {
     if (!f.title.trim()) err.title = "Award title is required";
     if (!f.organizationName.trim()) err.organizationName = "Organization is required";
     if (!f.recipientName.trim()) err.recipientName = "Recipient name is required";
-    if (!looksLikeSolanaAddress(f.recipientWallet)) err.recipientWallet = "Enter a valid Solana wallet address";
+    if (!f.recipientWallet.trim()) err.recipientWallet = "Recipient wallet is required";
+    else if (!isValidSolanaAddress(f.recipientWallet)) err.recipientWallet = "Not a valid Solana address (must be a 32-byte base58 public key)";
     if (f.rewardType === "monetary" && !(Number(f.rewardAmount) > 0)) err.rewardAmount = "Enter an amount greater than 0";
     setErrors(err);
     if (Object.keys(err).length) return;

@@ -18,10 +18,7 @@ export function generateAwardId(programName: string): string {
   return `PRISMA-${programCode(programName)}-${hex}`;
 }
 
-/** Basic base58 shape check only. Real validation arrives in Phase 2. */
-export function looksLikeSolanaAddress(value: string): boolean {
-  return /^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(value.trim());
-}
+export { isValidSolanaAddress } from "../solana/address";
 
 export function createDraftAward(input: AwardInput): Award {
   return {

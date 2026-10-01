@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Wallet } from "lucide-react";
+import { WalletButton } from "./WalletButton";
 import { PrismaMark } from "./PrismaMark";
 
 export function SiteHeader() {
@@ -18,10 +18,7 @@ export function SiteHeader() {
         </nav>
         <div className="ml-auto flex items-center gap-2">
           <Link to="/dashboard" className="btn btn-ghost h-8 px-3 md:hidden">Dashboard</Link>
-          <button className="btn btn-secondary h-9" disabled title="Wallet connection arrives in the next phase">
-            <Wallet className="size-4" />
-            <span className="hidden sm:inline">Connect wallet</span>
-          </button>
+          <WalletButton />
         </div>
       </div>
     </header>
