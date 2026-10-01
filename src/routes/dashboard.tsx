@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { ArrowUpRight, Trash2 } from "lucide-react";
+import { ArrowUpRight, Plus, Trash2 } from "lucide-react";
 import { AppShell } from "@/components/prisma/AppShell";
 import { DemoChip, PaymentChip, VerificationChip } from "@/components/prisma/StatusChips";
 import { DEMO_PROGRAMS } from "@/lib/awards/demo";
