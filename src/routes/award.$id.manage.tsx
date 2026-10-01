@@ -1,8 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ExternalLink, Send } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import { AppShell } from "@/components/prisma/AppShell";
-import { DemoChip, PaymentChip } from "@/components/prisma/StatusChips";
+import { DemoChip } from "@/components/prisma/StatusChips";
 import { IssueAttestationPanel } from "@/components/prisma/IssueAttestationPanel";
+import { RewardPaymentPanel } from "@/components/prisma/RewardPaymentPanel";
 import { AWARD_TYPE_LABELS } from "@/lib/awards/types";
 import { formatReward } from "@/lib/awards/logic";
 import { useAward } from "@/lib/awards/store";
@@ -87,31 +88,17 @@ function Manage() {
           <div className="space-y-6">
             <IssueAttestationPanel award={award} />
 
-            <div className="surface p-6">
-              <div className="flex items-center justify-between">
+            {award.rewardType === "monetary" ? (
+              <RewardPaymentPanel award={award} />
+            ) : (
+              <div className="surface p-6">
                 <p className="eyebrow">Reward</p>
-                {award.rewardType === "monetary" && <PaymentChip award={award} />}
-              </div>
-              <p className="mt-4 text-2xl font-semibold tracking-tight">{formatReward(award)}</p>
-              {award.rewardType === "monetary" ? (
-                <>
-                  <button
-                    className="btn btn-secondary mt-5 w-full"
-                    disabled
-                    title="Available after verification"
-                  >
-                    <Send className="size-4" /> Send Reward
-                  </button>
-                  <p className="mt-2 text-center text-xs text-muted-foreground">
-                    Unlocks once the award is verified.
-                  </p>
-                </>
-              ) : (
+                <p className="mt-4 text-2xl font-semibold tracking-tight">{formatReward(award)}</p>
                 <p className="mt-2 text-sm text-muted-foreground">
                   No payout attached to this award.
                 </p>
-              )}
-            </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
