@@ -63,7 +63,7 @@ export const REWARD_TYPE_LABELS: Record<RewardType, string> = {
   non_monetary: "Other benefit",
 };
 
-/** Solana reward assets an organizer can choose. Only SOL is payable on Devnet today. */
+/** Solana reward assets an organizer can choose. During the Devnet beta only SOL is payable from PRISMA; the official release settles all supported Solana assets. */
 export const REWARD_ASSETS = [
   { symbol: "USDC", name: "USD Coin" },
   { symbol: "SOL", name: "Solana" },
