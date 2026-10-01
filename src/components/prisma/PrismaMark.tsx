@@ -10,7 +10,13 @@ export function PrismaMark({ className }: { className?: string }) {
           <stop offset="1" stopColor="oklch(0.62 0.13 295)" />
         </linearGradient>
       </defs>
-      <path d="M12 2 L22 20 H2 Z" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
+      <path
+        d="M12 2 L22 20 H2 Z"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinejoin="round"
+      />
       <path d="M12 2 L14.5 20" stroke="url(#pm-s)" strokeWidth="1.6" />
     </svg>
   );

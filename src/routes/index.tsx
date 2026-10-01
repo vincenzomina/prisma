@@ -7,21 +7,56 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "PRISMA — Verifiable awards. Programmable rewards." },
-      { name: "description", content: "Issue trusted recognition, verify achievements and deliver rewards through one seamless infrastructure layer." },
+      {
+        name: "description",
+        content:
+          "Issue trusted recognition, verify achievements and deliver rewards through one seamless infrastructure layer.",
+      },
       { property: "og:title", content: "PRISMA — Verifiable awards. Programmable rewards." },
-      { property: "og:description", content: "Trust and reward infrastructure for organizations running programs, competitions and incentive initiatives." },
+      {
+        property: "og:description",
+        content:
+          "Trust and reward infrastructure for organizations running programs, competitions and incentive initiatives.",
+      },
     ],
   }),
   component: Landing,
 });
 
 const steps = [
-  { k: "01", tag: "Create", title: "Create an Award", body: "Define the program, the achievement, the recipient and an optional reward in one structured record.", Icon: FilePlus2 },
-  { k: "02", tag: "Verify", title: "Verify the achievement", body: "Issue the award as a tamper-proof attestation anyone can check — no account, no crypto knowledge required.", Icon: BadgeCheck },
-  { k: "03", tag: "Reward", title: "Deliver the reward", body: "Send the associated prize directly to the recipient, linked to the award by its unique ID.", Icon: HandCoins },
+  {
+    k: "01",
+    tag: "Create",
+    title: "Create an Award",
+    body: "Define the program, the achievement, the recipient and an optional reward in one structured record.",
+    Icon: FilePlus2,
+  },
+  {
+    k: "02",
+    tag: "Verify",
+    title: "Verify the achievement",
+    body: "Issue the award as a tamper-proof attestation anyone can check — no account, no crypto knowledge required.",
+    Icon: BadgeCheck,
+  },
+  {
+    k: "03",
+    tag: "Reward",
+    title: "Deliver the reward",
+    body: "Send the associated prize directly to the recipient, linked to the award by its unique ID.",
+    Icon: HandCoins,
+  },
 ];
 
-const audiences = ["Technology events", "Universities", "Startup competitions", "Accelerators", "Grants & scholarships", "Developer programs", "Corporate innovation", "Employee recognition"];
+const audiences = [
+  "Technology events",
+  "Universities",
+  "Startup competitions",
+  "Accelerators",
+  "Grants & scholarships",
+  "Developer programs",
+  "Corporate innovation",
+  "Employee recognition",
+];
 
 function Landing() {
   const demo = DEMO_AWARDS[0]!;
@@ -36,10 +71,13 @@ function Landing() {
             <h1 className="mt-6 text-5xl font-semibold leading-[1.02] tracking-[-0.035em] sm:text-6xl md:text-7xl">
               Verifiable awards.
               <br />
-              <span className="font-display font-normal italic tracking-[-0.01em]">Programmable rewards.</span>
+              <span className="font-display font-normal italic tracking-[-0.01em]">
+                Programmable rewards.
+              </span>
             </h1>
             <p className="mt-6 max-w-xl text-lg text-muted-foreground">
-              Issue trusted recognition, verify achievements and deliver rewards through one seamless infrastructure layer.
+              Issue trusted recognition, verify achievements and deliver rewards through one
+              seamless infrastructure layer.
             </p>
             <p className="mt-3 max-w-xl text-sm text-muted-foreground">
               Built for organizations running programs, competitions and incentive initiatives.
@@ -48,13 +86,21 @@ function Landing() {
               <Link to="/award/create" className="btn btn-primary h-11 px-5">
                 Create an Award <ArrowRight className="size-4" />
               </Link>
-              <Link to="/award/$id" params={{ id: demo.id }} className="btn btn-secondary h-11 px-5">
+              <Link
+                to="/award/$id"
+                params={{ id: demo.id }}
+                className="btn btn-secondary h-11 px-5"
+              >
                 View Demo Award
               </Link>
             </div>
           </div>
 
-          <Link to="/award/$id" params={{ id: demo.id }} className="group animate-fade-up block [animation-delay:150ms]">
+          <Link
+            to="/award/$id"
+            params={{ id: demo.id }}
+            className="group animate-fade-up block [animation-delay:150ms]"
+          >
             <div className="surface surface-lift relative overflow-hidden p-7 transition-transform duration-300 group-hover:-translate-y-1">
               <div className="spectrum-line absolute inset-x-0 top-0" />
               <div className="flex items-center justify-between">
@@ -88,7 +134,9 @@ function Landing() {
           {steps.map(({ k, tag, title, body, Icon }) => (
             <div key={k} className="bg-card p-8">
               <div className="flex items-center justify-between">
-                <span className="eyebrow">{k} · {tag}</span>
+                <span className="eyebrow">
+                  {k} · {tag}
+                </span>
                 <Icon className="size-5 text-muted-foreground" />
               </div>
               <h3 className="mt-10 text-xl font-semibold">{title}</h3>
@@ -102,11 +150,16 @@ function Landing() {
         <div className="surface flex flex-col gap-8 p-8 md:flex-row md:items-center md:justify-between md:p-10">
           <div className="max-w-md">
             <p className="eyebrow">Made for structured programs</p>
-            <p className="mt-3 text-lg">Hackathons are just the start. PRISMA works anywhere an organization recognizes achievement.</p>
+            <p className="mt-3 text-lg">
+              Hackathons are just the start. PRISMA works anywhere an organization recognizes
+              achievement.
+            </p>
           </div>
           <div className="flex max-w-lg flex-wrap gap-2">
             {audiences.map((a) => (
-              <span key={a} className="rounded-full border px-3 py-1 text-sm text-muted-foreground">{a}</span>
+              <span key={a} className="rounded-full border px-3 py-1 text-sm text-muted-foreground">
+                {a}
+              </span>
             ))}
           </div>
         </div>

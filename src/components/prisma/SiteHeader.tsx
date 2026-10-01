@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Wallet } from "lucide-react";
+import { WalletButton } from "./WalletButton";
 import { PrismaMark } from "./PrismaMark";
 
 export function SiteHeader() {
@@ -11,17 +11,32 @@ export function SiteHeader() {
           <span className="text-[15px] font-semibold tracking-[0.18em]">PRISMA</span>
         </Link>
         <nav className="hidden items-center gap-1 md:flex">
-          <Link to="/" hash="product" className="btn btn-ghost h-8 px-3">Product</Link>
-          <Link to="/" hash="how-it-works" className="btn btn-ghost h-8 px-3">How it works</Link>
-          <Link to="/dashboard" className="btn btn-ghost h-8 px-3" activeProps={{ className: "text-foreground" }}>Dashboard</Link>
-          <Link to="/award/create" className="btn btn-ghost h-8 px-3" activeProps={{ className: "text-foreground" }}>Create Award</Link>
+          <Link to="/" hash="product" className="btn btn-ghost h-8 px-3">
+            Product
+          </Link>
+          <Link to="/" hash="how-it-works" className="btn btn-ghost h-8 px-3">
+            How it works
+          </Link>
+          <Link
+            to="/dashboard"
+            className="btn btn-ghost h-8 px-3"
+            activeProps={{ className: "text-foreground" }}
+          >
+            Dashboard
+          </Link>
+          <Link
+            to="/award/create"
+            className="btn btn-ghost h-8 px-3"
+            activeProps={{ className: "text-foreground" }}
+          >
+            Create Award
+          </Link>
         </nav>
         <div className="ml-auto flex items-center gap-2">
-          <Link to="/dashboard" className="btn btn-ghost h-8 px-3 md:hidden">Dashboard</Link>
-          <button className="btn btn-secondary h-9" disabled title="Wallet connection arrives in the next phase">
-            <Wallet className="size-4" />
-            <span className="hidden sm:inline">Connect wallet</span>
-          </button>
+          <Link to="/dashboard" className="btn btn-ghost h-8 px-3 md:hidden">
+            Dashboard
+          </Link>
+          <WalletButton />
         </div>
       </div>
     </header>

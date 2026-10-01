@@ -11,7 +11,9 @@ export function AwardMissing({ id }: { id: string }) {
         <p className="mt-4 text-sm text-muted-foreground">
           Awards are stored on this device for now, so drafts created elsewhere won't appear here.
         </p>
-        <Link to="/dashboard" className="btn btn-primary mt-8">Go to dashboard</Link>
+        <Link to="/dashboard" className="btn btn-primary mt-8">
+          Go to dashboard
+        </Link>
       </div>
     </AppShell>
   );

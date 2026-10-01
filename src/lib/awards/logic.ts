@@ -7,21 +7,25 @@ export function programCode(programName: string): string {
     .replace(/(19|20)\d{2}/g, "")
     .split(/\s+/)
     .filter(Boolean);
-  const initials = words.map((w) => w[0]!.toUpperCase()).join("").replace(/[^A-Z0-9]/g, "").slice(0, 4) || "PRG";
+  const initials =
+    words
+      .map((w) => w[0]!.toUpperCase())
+      .join("")
+      .replace(/[^A-Z0-9]/g, "")
+      .slice(0, 4) || "PRG";
   return `${initials}${year ? year[2] : ""}`;
 }
 
 export function generateAwardId(programName: string): string {
   const bytes = new Uint8Array(3);
   crypto.getRandomValues(bytes);
-  const hex = Array.from(bytes, (b) => b.toString(16).padStart(2, "0")).join("").toUpperCase();
+  const hex = Array.from(bytes, (b) => b.toString(16).padStart(2, "0"))
+    .join("")
+    .toUpperCase();
   return `PRISMA-${programCode(programName)}-${hex}`;
 }
 
-/** Basic base58 shape check only. Real validation arrives in Phase 2. */
-export function looksLikeSolanaAddress(value: string): boolean {
-  return /^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(value.trim());
-}
+export { isValidSolanaAddress } from "../solana/address";
 
 export function createDraftAward(input: AwardInput): Award {
   return {
