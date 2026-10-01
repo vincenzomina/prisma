@@ -1,7 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ExternalLink, Send, ShieldCheck } from "lucide-react";
+import { ExternalLink, Send } from "lucide-react";
 import { AppShell } from "@/components/prisma/AppShell";
-import { DemoChip, PaymentChip, VerificationChip } from "@/components/prisma/StatusChips";
+import { DemoChip, PaymentChip } from "@/components/prisma/StatusChips";
+import { IssueAttestationPanel } from "@/components/prisma/IssueAttestationPanel";
 import { AWARD_TYPE_LABELS } from "@/lib/awards/types";
 import { formatReward } from "@/lib/awards/logic";
 import { useAward } from "@/lib/awards/store";
@@ -84,22 +85,7 @@ function Manage() {
           </div>
 
           <div className="space-y-6">
-            <div className="surface relative overflow-hidden p-6">
-              <div className="spectrum-line absolute inset-x-0 top-0 opacity-60" />
-              <div className="flex items-center justify-between">
-                <p className="eyebrow">Verification</p>
-                <VerificationChip award={award} />
-              </div>
-              <p className="mt-4 text-sm text-muted-foreground">
-                Issuing creates a tamper-proof record of this award that anyone can verify.
-              </p>
-              <button className="btn btn-primary mt-5 w-full" disabled title="Available in Phase 3">
-                <ShieldCheck className="size-4" /> Issue Verified Award
-              </button>
-              <p className="mt-2 text-center text-xs text-muted-foreground">
-                Requires a connected wallet — coming next.
-              </p>
-            </div>
+            <IssueAttestationPanel award={award} />
 
             <div className="surface p-6">
               <div className="flex items-center justify-between">
