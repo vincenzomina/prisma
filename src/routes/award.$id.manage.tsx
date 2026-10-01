@@ -31,6 +31,15 @@ function Row({ label, children }: { label: string; children: React.ReactNode }) 
   );
 }
 
+function Group({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <div className="py-2">
+      <p className="eyebrow pb-1 pt-4">{title}</p>
+      {children}
+    </div>
+  );
+}
+
 function Manage() {
   const { id } = Route.useParams();
   const award = useAward(id);
@@ -56,10 +65,10 @@ function Manage() {
           </Link>
         </div>
 
-        <div className="mt-10 grid gap-6 lg:grid-cols-[1.4fr_1fr]">
-          <div className="space-y-6">
-            <div className="surface divide-y px-6">
-              <p className="eyebrow py-4">Award</p>
+        <div className="mt-10 grid gap-8 lg:grid-cols-[1.4fr_1fr]">
+          <div className="surface divide-y px-6">
+            <Group title="Award">
+              <Row label="Title">{award.title}</Row>
               <Row label="Type">{AWARD_TYPE_LABELS[award.awardType]}</Row>
               {award.description && (
                 <Row label="Description">
@@ -69,23 +78,22 @@ function Manage() {
               <Row label="Created">
                 {new Date(award.createdAt).toLocaleDateString(undefined, { dateStyle: "medium" })}
               </Row>
-            </div>
-            <div className="surface divide-y px-6">
-              <p className="eyebrow py-4">Recipient</p>
+            </Group>
+            <Group title="Recipient">
               <Row label="Name">{award.recipientName}</Row>
               <Row label="Wallet">
                 <span className="break-all font-mono text-xs">{award.recipientWallet}</span>
               </Row>
-            </div>
-            <div className="surface divide-y px-6">
-              <p className="eyebrow py-4">Program & issuer</p>
+            </Group>
+            <Group title="Issuer">
               <Row label="Program">{award.programName}</Row>
               <Row label="Organization">{award.organizationName}</Row>
               {award.sponsorName && <Row label="Sponsor">{award.sponsorName}</Row>}
-            </div>
+            </Group>
           </div>
 
-          <div className="space-y-6">
+          <div className="space-y-4">
+            <p className="eyebrow">Solana · Devnet execution</p>
             <IssueAttestationPanel award={award} />
 
             {award.rewardType === "monetary" ? (
