@@ -117,7 +117,9 @@ function PublicAward() {
             <div className="p-7">
               <p className="eyebrow">Reward</p>
               <p className="mt-2 text-xl font-semibold tracking-tight">
-                {award.rewardType === "monetary" ? (award.rewardAmount ?? "—") : formatReward(award)}
+                {award.rewardType === "monetary"
+                  ? (award.rewardAmount ?? "—")
+                  : formatReward(award)}
               </p>
               {award.rewardType === "monetary" && (
                 <>
