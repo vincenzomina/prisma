@@ -6,10 +6,26 @@
 // You can pass additional config via defineConfig({ vite: { ... }, etc... }) if needed.
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
+import { fileURLToPath } from "node:url";
+
+// @solana/kit-plugin-rpc and -wallet only export "browser"/"node" conditions, which the
+// worker server build can't resolve. Point both at their browser builds (the code only
+// runs in the browser; the client is created lazily).
+const solanaBrowser = (pkg: string) =>
+  fileURLToPath(new URL(`./node_modules/@solana/${pkg}/dist/index.browser.mjs`, import.meta.url));
+
 export default defineConfig({
   tanstackStart: {
     // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
     // nitro/vite builds from this
     server: { entry: "server" },
+  },
+  vite: {
+    resolve: {
+      alias: [
+        { find: /^@solana\/kit-plugin-rpc$/, replacement: solanaBrowser("kit-plugin-rpc") },
+        { find: /^@solana\/kit-plugin-wallet$/, replacement: solanaBrowser("kit-plugin-wallet") },
+      ],
+    },
   },
 });
