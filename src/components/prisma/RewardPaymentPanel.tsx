@@ -28,7 +28,7 @@ export function RewardPaymentPanel({ award }: { award: Award }) {
   const [error, setError] = useState<string | null>(null);
 
   const paid = award.paymentStatus === "paid" && !!award.paymentTransactionSignature;
-  const state: UiState = paid ? "paid" : step ?? (error ? "failed" : "not_sent");
+  const state: UiState = paid ? "paid" : (step ?? (error ? "failed" : "not_sent"));
   const verified = result.state === "verified";
   const blocked = canPayAward(award);
 
@@ -40,7 +40,9 @@ export function RewardPaymentPanel({ award }: { award: Award }) {
       recordConfirmedPayment(award.id, r.signature);
     } catch (e) {
       const msg = e instanceof Error ? e.message : String(e);
-      setError(/reject|declin|cancel/i.test(msg) ? "You cancelled the request in your wallet." : msg);
+      setError(
+        /reject|declin|cancel/i.test(msg) ? "You cancelled the request in your wallet." : msg,
+      );
     } finally {
       setStep(null);
     }
@@ -50,7 +52,11 @@ export function RewardPaymentPanel({ award }: { award: Award }) {
     <div className="surface p-6">
       <div className="flex items-center justify-between">
         <p className="eyebrow">Reward</p>
-        <span className={paid ? "chip chip-success" : state === "failed" ? "chip text-destructive" : "chip"}>
+        <span
+          className={
+            paid ? "chip chip-success" : state === "failed" ? "chip text-destructive" : "chip"
+          }
+        >
           {paid && <Check className="size-3" />}
           {step && <Loader2 className="size-3 animate-spin" />}
           {LABEL[state]}
