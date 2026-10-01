@@ -8,8 +8,8 @@ import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
 import { fileURLToPath } from "node:url";
 
-// @solana/kit-plugin-rpc and -wallet only export "browser"/"node" conditions, which the
-// worker server build can't resolve. Point both at their browser builds (the code only
+// @solana/kit-plugin-* packages only export "browser"/"node" conditions, which the
+// worker server build can't resolve. Point them at their browser builds (the code only
 // runs in the browser; the client is created lazily).
 const solanaBrowser = (pkg: string) =>
   fileURLToPath(new URL(`./node_modules/@solana/${pkg}/dist/index.browser.mjs`, import.meta.url));
@@ -26,7 +26,7 @@ export default defineConfig({
         name: "solana-browser-builds",
         enforce: "pre",
         resolveId(id: string) {
-          const m = /^@solana\/(kit-plugin-rpc|kit-plugin-wallet)$/.exec(id);
+          const m = /^@solana\/(kit-plugin-[a-z-]+)$/.exec(id);
           return m ? solanaBrowser(m[1]) : null;
         },
       },
