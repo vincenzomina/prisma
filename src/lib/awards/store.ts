@@ -59,6 +59,20 @@ export function recordConfirmedPayment(id: string, signature: string) {
   saveAward({ ...award, paymentStatus: "paid", paymentTransactionSignature: signature });
 }
 
+/**
+ * Deletes a locally created award. Demo awards can never be deleted — they are
+ * sample content, not the organizer's own records.
+ */
+export function deleteAward(id: string) {
+  const local = readLocal();
+  if (!local.some((a) => a.id === id)) {
+    throw new Error("Only locally created awards can be deleted.");
+  }
+  window.localStorage.setItem(KEY, JSON.stringify(local.filter((a) => a.id !== id)));
+  cache = null;
+  listeners.forEach((l) => l());
+}
+
 function subscribe(l: () => void) {
   listeners.add(l);
   return () => listeners.delete(l);
