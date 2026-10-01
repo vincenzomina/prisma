@@ -21,11 +21,15 @@ export default defineConfig({
     server: { entry: "server" },
   },
   vite: {
-    resolve: {
-      alias: [
-        { find: /^@solana\/kit-plugin-rpc$/, replacement: solanaBrowser("kit-plugin-rpc") },
-        { find: /^@solana\/kit-plugin-wallet$/, replacement: solanaBrowser("kit-plugin-wallet") },
-      ],
-    },
+    plugins: [
+      {
+        name: "solana-browser-builds",
+        enforce: "pre",
+        resolveId(id: string) {
+          const m = /^@solana\/(kit-plugin-rpc|kit-plugin-wallet)$/.exec(id);
+          return m ? solanaBrowser(m[1]) : null;
+        },
+      },
+    ],
   },
 });
