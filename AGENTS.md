@@ -14,3 +14,5 @@
 - Blockchain status fields (verificationStatus, paymentStatus, signatures) may only be set from confirmed Solana results — never from UI state — because the product must never fake on-chain verification.
 - Phase 1 persistence is localStorage via `useSyncExternalStore` (server snapshot = demo data) — no database until the user explicitly approves one.
 - Styles come from semantic classes/tokens in `src/styles.css` (`.btn-*`, `.surface`, `.chip-*`, `.field-input`) — keeps the design system in one place.
+- Solana wallet logic lives in `src/lib/solana/` (config, address, wallet) using `@solana/kit` + `@solana/kit-plugin-wallet` (Wallet Standard); UI only calls `useWallet()` — official current tooling, keeps wallet code out of components.
+- The Solana client is created lazily in the browser, never at module scope — the worker runtime forbids global-scope side effects and wallets are browser-only.
