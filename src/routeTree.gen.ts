@@ -10,33 +10,80 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as AwardCreateRouteImport } from './routes/award.create'
+import { Route as AwardIdIndexRouteImport } from './routes/award.$id.index'
+import { Route as AwardIdManageRouteImport } from './routes/award.$id.manage'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AwardCreateRoute = AwardCreateRouteImport.update({
+  id: '/award/create',
+  path: '/award/create',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AwardIdIndexRoute = AwardIdIndexRouteImport.update({
+  id: '/award/$id/',
+  path: '/award/$id/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AwardIdManageRoute = AwardIdManageRouteImport.update({
+  id: '/award/$id/manage',
+  path: '/award/$id/manage',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/dashboard': typeof DashboardRoute
+  '/award/create': typeof AwardCreateRoute
+  '/award/$id/manage': typeof AwardIdManageRoute
+  '/award/$id/': typeof AwardIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/dashboard': typeof DashboardRoute
+  '/award/create': typeof AwardCreateRoute
+  '/award/$id/manage': typeof AwardIdManageRoute
+  '/award/$id': typeof AwardIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/dashboard': typeof DashboardRoute
+  '/award/create': typeof AwardCreateRoute
+  '/award/$id/manage': typeof AwardIdManageRoute
+  '/award/$id/': typeof AwardIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    '/' | '/dashboard' | '/award/create' | '/award/$id/manage' | '/award/$id/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/dashboard' | '/award/create' | '/award/$id/manage' | '/award/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/dashboard'
+    | '/award/create'
+    | '/award/$id/manage'
+    | '/award/$id/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DashboardRoute: typeof DashboardRoute
+  AwardCreateRoute: typeof AwardCreateRoute
+  AwardIdManageRoute: typeof AwardIdManageRoute
+  AwardIdIndexRoute: typeof AwardIdIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +95,43 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/award/create': {
+      id: '/award/create'
+      path: '/award/create'
+      fullPath: '/award/create'
+      preLoaderRoute: typeof AwardCreateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/award/$id/': {
+      id: '/award/$id/'
+      path: '/award/$id'
+      fullPath: '/award/$id/'
+      preLoaderRoute: typeof AwardIdIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/award/$id/manage': {
+      id: '/award/$id/manage'
+      path: '/award/$id/manage'
+      fullPath: '/award/$id/manage'
+      preLoaderRoute: typeof AwardIdManageRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DashboardRoute: DashboardRoute,
+  AwardCreateRoute: AwardCreateRoute,
+  AwardIdManageRoute: AwardIdManageRoute,
+  AwardIdIndexRoute: AwardIdIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
