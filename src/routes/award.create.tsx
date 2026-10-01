@@ -3,15 +3,26 @@ import { useState, type ReactNode } from "react";
 import { AppShell } from "@/components/prisma/AppShell";
 import { createDraftAward, isValidSolanaAddress } from "@/lib/awards/logic";
 import { saveAward } from "@/lib/awards/store";
-import { AWARD_TYPE_LABELS, REWARD_TYPE_LABELS, type AwardType, type RewardType } from "@/lib/awards/types";
+import {
+  AWARD_TYPE_LABELS,
+  REWARD_TYPE_LABELS,
+  type AwardType,
+  type RewardType,
+} from "@/lib/awards/types";
 
 export const Route = createFileRoute("/award/create")({
   head: () => ({
     meta: [
       { title: "Create Award — PRISMA" },
-      { name: "description", content: "Create a new award with recipient, issuer and optional reward." },
+      {
+        name: "description",
+        content: "Create a new award with recipient, issuer and optional reward.",
+      },
       { property: "og:title", content: "Create Award — PRISMA" },
-      { property: "og:description", content: "Define an award, its recipient and an optional reward." },
+      {
+        property: "og:description",
+        content: "Define an award, its recipient and an optional reward.",
+      },
     ],
   }),
   component: CreateAward,
@@ -32,7 +43,17 @@ function Section({ n, title, children }: { n: string; title: string; children: R
   );
 }
 
-function Field({ label, optional, error, children }: { label: string; optional?: boolean | undefined; error?: string | undefined; children: ReactNode }) {
+function Field({
+  label,
+  optional,
+  error,
+  children,
+}: {
+  label: string;
+  optional?: boolean | undefined;
+  error?: string | undefined;
+  children: ReactNode;
+}) {
   return (
     <label className="block">
       <span className="field-label">
@@ -60,7 +81,19 @@ function CreateAward() {
     rewardAsset: "USDC",
     rewardDescription: "",
   });
-  const [errors, setErrors] = useState<Partial<Record<"programName" | "title" | "organizationName" | "recipientName" | "recipientWallet" | "rewardAmount", string>>>({});
+  const [errors, setErrors] = useState<
+    Partial<
+      Record<
+        | "programName"
+        | "title"
+        | "organizationName"
+        | "recipientName"
+        | "recipientWallet"
+        | "rewardAmount",
+        string
+      >
+    >
+  >({});
   const set = <K extends keyof typeof f>(k: K, v: (typeof f)[K]) => setF((p) => ({ ...p, [k]: v }));
 
   function submit(e: React.FormEvent) {
@@ -71,8 +104,10 @@ function CreateAward() {
     if (!f.organizationName.trim()) err.organizationName = "Organization is required";
     if (!f.recipientName.trim()) err.recipientName = "Recipient name is required";
     if (!f.recipientWallet.trim()) err.recipientWallet = "Recipient wallet is required";
-    else if (!isValidSolanaAddress(f.recipientWallet)) err.recipientWallet = "Not a valid Solana address (must be a 32-byte base58 public key)";
-    if (f.rewardType === "monetary" && !(Number(f.rewardAmount) > 0)) err.rewardAmount = "Enter an amount greater than 0";
+    else if (!isValidSolanaAddress(f.recipientWallet))
+      err.recipientWallet = "Not a valid Solana address (must be a 32-byte base58 public key)";
+    if (f.rewardType === "monetary" && !(Number(f.rewardAmount) > 0))
+      err.rewardAmount = "Enter an amount greater than 0";
     setErrors(err);
     if (Object.keys(err).length) return;
 
@@ -88,7 +123,8 @@ function CreateAward() {
       rewardType: f.rewardType,
       rewardAmount: f.rewardType === "monetary" ? f.rewardAmount : undefined,
       rewardAsset: f.rewardType === "monetary" ? f.rewardAsset.trim() || undefined : undefined,
-      rewardDescription: f.rewardType === "non_monetary" ? f.rewardDescription.trim() || undefined : undefined,
+      rewardDescription:
+        f.rewardType === "non_monetary" ? f.rewardDescription.trim() || undefined : undefined,
     });
     saveAward(award);
     navigate({ to: "/award/$id/manage", params: { id: award.id } });
@@ -99,56 +135,107 @@ function CreateAward() {
       <div className="mx-auto max-w-4xl px-5 py-12">
         <p className="eyebrow">New award</p>
         <h1 className="mt-2 text-3xl font-semibold tracking-tight">Create Award</h1>
-        <p className="mt-2 text-muted-foreground">This creates a draft. Nothing is issued or sent until you choose to.</p>
+        <p className="mt-2 text-muted-foreground">
+          This creates a draft. Nothing is issued or sent until you choose to.
+        </p>
 
         <form onSubmit={submit} noValidate className="surface mt-10 px-6 md:px-10">
           <Section n="01" title="Program">
             <Field label="Program name" error={errors.programName}>
-              <input className="field-input" aria-invalid={!!errors.programName} value={f.programName} onChange={(e) => set("programName", e.target.value)} />
+              <input
+                className="field-input"
+                aria-invalid={!!errors.programName}
+                value={f.programName}
+                onChange={(e) => set("programName", e.target.value)}
+              />
             </Field>
           </Section>
 
           <Section n="02" title="Award">
             <Field label="Award title" error={errors.title}>
-              <input className="field-input" aria-invalid={!!errors.title} placeholder="e.g. Tesla Challenge Winner" value={f.title} onChange={(e) => set("title", e.target.value)} />
+              <input
+                className="field-input"
+                aria-invalid={!!errors.title}
+                placeholder="e.g. Tesla Challenge Winner"
+                value={f.title}
+                onChange={(e) => set("title", e.target.value)}
+              />
             </Field>
             <div>
               <span className="field-label">Award type</span>
               <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
                 {awardTypes.map((t) => (
-                  <button type="button" key={t} className="option-tile" data-active={f.awardType === t} onClick={() => set("awardType", t)}>
+                  <button
+                    type="button"
+                    key={t}
+                    className="option-tile"
+                    data-active={f.awardType === t}
+                    onClick={() => set("awardType", t)}
+                  >
                     {AWARD_TYPE_LABELS[t]}
                   </button>
                 ))}
               </div>
             </div>
             <Field label="Description" optional>
-              <textarea rows={3} className="field-input" value={f.description} onChange={(e) => set("description", e.target.value)} />
+              <textarea
+                rows={3}
+                className="field-input"
+                value={f.description}
+                onChange={(e) => set("description", e.target.value)}
+              />
             </Field>
           </Section>
 
           <Section n="03" title="Issuer">
             <Field label="Organization" error={errors.organizationName}>
-              <input className="field-input" aria-invalid={!!errors.organizationName} value={f.organizationName} onChange={(e) => set("organizationName", e.target.value)} />
+              <input
+                className="field-input"
+                aria-invalid={!!errors.organizationName}
+                value={f.organizationName}
+                onChange={(e) => set("organizationName", e.target.value)}
+              />
             </Field>
             <Field label="Sponsor" optional>
-              <input className="field-input" placeholder="e.g. Tesla" value={f.sponsorName} onChange={(e) => set("sponsorName", e.target.value)} />
+              <input
+                className="field-input"
+                placeholder="e.g. Tesla"
+                value={f.sponsorName}
+                onChange={(e) => set("sponsorName", e.target.value)}
+              />
             </Field>
           </Section>
 
           <Section n="04" title="Recipient">
             <Field label="Recipient name" error={errors.recipientName}>
-              <input className="field-input" aria-invalid={!!errors.recipientName} value={f.recipientName} onChange={(e) => set("recipientName", e.target.value)} />
+              <input
+                className="field-input"
+                aria-invalid={!!errors.recipientName}
+                value={f.recipientName}
+                onChange={(e) => set("recipientName", e.target.value)}
+              />
             </Field>
             <Field label="Recipient Solana wallet" error={errors.recipientWallet}>
-              <input className="field-input font-mono text-[13px]" aria-invalid={!!errors.recipientWallet} placeholder="Base58 address" value={f.recipientWallet} onChange={(e) => set("recipientWallet", e.target.value)} />
+              <input
+                className="field-input font-mono text-[13px]"
+                aria-invalid={!!errors.recipientWallet}
+                placeholder="Base58 address"
+                value={f.recipientWallet}
+                onChange={(e) => set("recipientWallet", e.target.value)}
+              />
             </Field>
           </Section>
 
           <Section n="05" title="Reward">
             <div className="grid gap-2 sm:grid-cols-3">
               {rewardTypes.map((t) => (
-                <button type="button" key={t} className="option-tile" data-active={f.rewardType === t} onClick={() => set("rewardType", t)}>
+                <button
+                  type="button"
+                  key={t}
+                  className="option-tile"
+                  data-active={f.rewardType === t}
+                  onClick={() => set("rewardType", t)}
+                >
                   {REWARD_TYPE_LABELS[t]}
                 </button>
               ))}
@@ -156,22 +243,40 @@ function CreateAward() {
             {f.rewardType === "monetary" && (
               <div className="grid gap-4 sm:grid-cols-[1fr_160px]">
                 <Field label="Reward amount" error={errors.rewardAmount}>
-                  <input inputMode="decimal" className="field-input" aria-invalid={!!errors.rewardAmount} placeholder="500" value={f.rewardAmount} onChange={(e) => set("rewardAmount", e.target.value)} />
+                  <input
+                    inputMode="decimal"
+                    className="field-input"
+                    aria-invalid={!!errors.rewardAmount}
+                    placeholder="500"
+                    value={f.rewardAmount}
+                    onChange={(e) => set("rewardAmount", e.target.value)}
+                  />
                 </Field>
                 <Field label="Reward asset">
-                  <input className="field-input" value={f.rewardAsset} onChange={(e) => set("rewardAsset", e.target.value)} />
+                  <input
+                    className="field-input"
+                    value={f.rewardAsset}
+                    onChange={(e) => set("rewardAsset", e.target.value)}
+                  />
                 </Field>
               </div>
             )}
             {f.rewardType === "non_monetary" && (
               <Field label="Benefit" optional>
-                <input className="field-input" placeholder="e.g. Accelerator interview" value={f.rewardDescription} onChange={(e) => set("rewardDescription", e.target.value)} />
+                <input
+                  className="field-input"
+                  placeholder="e.g. Accelerator interview"
+                  value={f.rewardDescription}
+                  onChange={(e) => set("rewardDescription", e.target.value)}
+                />
               </Field>
             )}
           </Section>
 
           <div className="flex items-center justify-end gap-3 border-t py-6">
-            <button type="submit" className="btn btn-primary h-11 px-6">Create Award</button>
+            <button type="submit" className="btn btn-primary h-11 px-6">
+              Create Award
+            </button>
           </div>
         </form>
       </div>

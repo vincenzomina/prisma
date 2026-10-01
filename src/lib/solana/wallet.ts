@@ -37,7 +37,14 @@ export interface WalletView {
   ready: boolean;
 }
 
-const SERVER_VIEW: WalletView = { status: "disconnected", address: null, walletName: null, walletIcon: null, wallets: [], ready: false };
+const SERVER_VIEW: WalletView = {
+  status: "disconnected",
+  address: null,
+  walletName: null,
+  walletIcon: null,
+  wallets: [],
+  ready: false,
+};
 
 function toStatus(s: WalletState["status"]): WalletUiStatus {
   if (s === "connected") return "connected";

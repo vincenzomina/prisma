@@ -1,11 +1,5 @@
 export type AwardType =
-  | "winner"
-  | "finalist"
-  | "achievement"
-  | "recognition"
-  | "contribution"
-  | "milestone"
-  | "other";
+  "winner" | "finalist" | "achievement" | "recognition" | "contribution" | "milestone" | "other";
 
 export type RewardType = "monetary" | "non_monetary" | "recognition_only";
 

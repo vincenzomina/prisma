@@ -10,9 +10,15 @@ export const Route = createFileRoute("/dashboard")({
   head: () => ({
     meta: [
       { title: "Dashboard — PRISMA" },
-      { name: "description", content: "Manage programs, awards and rewards in your PRISMA organizer dashboard." },
+      {
+        name: "description",
+        content: "Manage programs, awards and rewards in your PRISMA organizer dashboard.",
+      },
       { property: "og:title", content: "Dashboard — PRISMA" },
-      { property: "og:description", content: "Organizer dashboard for programs, awards and rewards." },
+      {
+        property: "og:description",
+        content: "Organizer dashboard for programs, awards and rewards.",
+      },
     ],
   }),
   component: Dashboard,
@@ -63,11 +69,15 @@ function Dashboard() {
                   <div className="flex items-start justify-between">
                     <div>
                       <p className="font-semibold">{p.name}</p>
-                      <p className="mt-1 text-sm text-muted-foreground">{p.organization} · {p.period}</p>
+                      <p className="mt-1 text-sm text-muted-foreground">
+                        {p.organization} · {p.period}
+                      </p>
                     </div>
                     <DemoChip />
                   </div>
-                  <p className="mt-6 text-sm text-muted-foreground">{count} award{count === 1 ? "" : "s"}</p>
+                  <p className="mt-6 text-sm text-muted-foreground">
+                    {count} award{count === 1 ? "" : "s"}
+                  </p>
                 </div>
               );
             })}
@@ -79,7 +89,9 @@ function Dashboard() {
           <div className="surface mt-4 overflow-hidden">
             <div className="hidden grid-cols-[2fr_1.2fr_1.4fr_1fr_1fr_auto] gap-4 border-b px-6 py-3 md:grid">
               {["Award", "Recipient", "Program", "Verification", "Reward", ""].map((h) => (
-                <span key={h} className="eyebrow">{h}</span>
+                <span key={h} className="eyebrow">
+                  {h}
+                </span>
               ))}
             </div>
             {awards.map((a) => (
@@ -95,7 +107,9 @@ function Dashboard() {
                 </div>
                 <p className="text-sm">{a.recipientName}</p>
                 <p className="text-sm text-muted-foreground">{a.programName}</p>
-                <div><VerificationChip award={a} /></div>
+                <div>
+                  <VerificationChip award={a} />
+                </div>
                 <div className="flex flex-col items-start gap-1">
                   <span className="text-sm">{formatReward(a)}</span>
                   {a.rewardType === "monetary" && <PaymentChip award={a} />}

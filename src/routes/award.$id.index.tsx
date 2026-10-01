@@ -11,9 +11,16 @@ export const Route = createFileRoute("/award/$id/")({
   head: ({ params }) => ({
     meta: [
       { title: `Award ${params.id} — PRISMA` },
-      { name: "description", content: "A PRISMA award: who issued it, what was achieved, who received it and whether it is authentic." },
+      {
+        name: "description",
+        content:
+          "A PRISMA award: who issued it, what was achieved, who received it and whether it is authentic.",
+      },
       { property: "og:title", content: `Award ${params.id} — PRISMA` },
-      { property: "og:description", content: "View this award and its verification status on PRISMA." },
+      {
+        property: "og:description",
+        content: "View this award and its verification status on PRISMA.",
+      },
     ],
   }),
   component: PublicAward,
@@ -49,7 +56,9 @@ function PublicAward() {
               {verified ? "Verified award" : "Unverified award"}
             </span>
             <p className="mt-8 eyebrow">{AWARD_TYPE_LABELS[award.awardType]}</p>
-            <h1 className="mx-auto mt-3 max-w-xl font-display text-5xl leading-[1.05] md:text-6xl">{award.title}</h1>
+            <h1 className="mx-auto mt-3 max-w-xl font-display text-5xl leading-[1.05] md:text-6xl">
+              {award.title}
+            </h1>
             <p className="mt-4 text-muted-foreground">{award.programName}</p>
 
             <div className="mx-auto mt-12 max-w-md">
@@ -58,7 +67,9 @@ function PublicAward() {
             </div>
 
             {award.description && (
-              <p className="mx-auto mt-8 max-w-lg text-sm leading-relaxed text-muted-foreground">{award.description}</p>
+              <p className="mx-auto mt-8 max-w-lg text-sm leading-relaxed text-muted-foreground">
+                {award.description}
+              </p>
             )}
 
             <div className="mx-auto mt-12 grid max-w-md grid-cols-2 gap-6 border-t pt-8 text-left">
@@ -78,7 +89,9 @@ function PublicAward() {
           <div className="grid border-t md:grid-cols-2">
             <div className="border-b p-7 md:border-b-0 md:border-r">
               <p className="eyebrow">Verification</p>
-              <p className={`mt-2 flex items-center gap-2 font-medium ${verified ? "text-success" : ""}`}>
+              <p
+                className={`mt-2 flex items-center gap-2 font-medium ${verified ? "text-success" : ""}`}
+              >
                 {verified && <Check className="size-4" />}
                 {verified ? "Verified on Solana" : verificationLabel(award)}
               </p>
@@ -92,7 +105,9 @@ function PublicAward() {
               <p className="eyebrow">Reward</p>
               <p className="mt-2 text-xl font-semibold tracking-tight">{formatReward(award)}</p>
               {award.rewardType === "monetary" && (
-                <p className={`mt-1 text-sm ${paid ? "text-success" : "text-muted-foreground"}`}>{paymentLabel(award)}</p>
+                <p className={`mt-1 text-sm ${paid ? "text-success" : "text-muted-foreground"}`}>
+                  {paymentLabel(award)}
+                </p>
               )}
             </div>
           </div>
@@ -113,8 +128,15 @@ function PublicAward() {
               </button>
             </div>
             <div className="flex gap-2">
-              <button className="btn btn-secondary h-9" disabled={!award.attestationAddress}>View attestation</button>
-              <button className="btn btn-secondary h-9" disabled={!award.attestationTransactionSignature}>View transaction</button>
+              <button className="btn btn-secondary h-9" disabled={!award.attestationAddress}>
+                View attestation
+              </button>
+              <button
+                className="btn btn-secondary h-9"
+                disabled={!award.attestationTransactionSignature}
+              >
+                View transaction
+              </button>
             </div>
           </div>
         </article>

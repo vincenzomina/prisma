@@ -37,7 +37,9 @@ function Manage() {
   return (
     <AppShell>
       <div className="mx-auto max-w-5xl px-5 py-12">
-        <Link to="/dashboard" className="text-sm text-muted-foreground hover:text-foreground">← Dashboard</Link>
+        <Link to="/dashboard" className="text-sm text-muted-foreground hover:text-foreground">
+          ← Dashboard
+        </Link>
         <div className="mt-4 flex flex-wrap items-start justify-between gap-4">
           <div>
             <div className="flex flex-wrap items-center gap-2">
@@ -57,13 +59,21 @@ function Manage() {
             <div className="surface divide-y px-6">
               <p className="eyebrow py-4">Award</p>
               <Row label="Type">{AWARD_TYPE_LABELS[award.awardType]}</Row>
-              {award.description && <Row label="Description"><span className="font-normal">{award.description}</span></Row>}
-              <Row label="Created">{new Date(award.createdAt).toLocaleDateString(undefined, { dateStyle: "medium" })}</Row>
+              {award.description && (
+                <Row label="Description">
+                  <span className="font-normal">{award.description}</span>
+                </Row>
+              )}
+              <Row label="Created">
+                {new Date(award.createdAt).toLocaleDateString(undefined, { dateStyle: "medium" })}
+              </Row>
             </div>
             <div className="surface divide-y px-6">
               <p className="eyebrow py-4">Recipient</p>
               <Row label="Name">{award.recipientName}</Row>
-              <Row label="Wallet"><span className="break-all font-mono text-xs">{award.recipientWallet}</span></Row>
+              <Row label="Wallet">
+                <span className="break-all font-mono text-xs">{award.recipientWallet}</span>
+              </Row>
             </div>
             <div className="surface divide-y px-6">
               <p className="eyebrow py-4">Program & issuer</p>
@@ -86,7 +96,9 @@ function Manage() {
               <button className="btn btn-primary mt-5 w-full" disabled title="Available in Phase 3">
                 <ShieldCheck className="size-4" /> Issue Verified Award
               </button>
-              <p className="mt-2 text-center text-xs text-muted-foreground">Requires a connected wallet — coming next.</p>
+              <p className="mt-2 text-center text-xs text-muted-foreground">
+                Requires a connected wallet — coming next.
+              </p>
             </div>
 
             <div className="surface p-6">
@@ -97,13 +109,21 @@ function Manage() {
               <p className="mt-4 text-2xl font-semibold tracking-tight">{formatReward(award)}</p>
               {award.rewardType === "monetary" ? (
                 <>
-                  <button className="btn btn-secondary mt-5 w-full" disabled title="Available after verification">
+                  <button
+                    className="btn btn-secondary mt-5 w-full"
+                    disabled
+                    title="Available after verification"
+                  >
                     <Send className="size-4" /> Send Reward
                   </button>
-                  <p className="mt-2 text-center text-xs text-muted-foreground">Unlocks once the award is verified.</p>
+                  <p className="mt-2 text-center text-xs text-muted-foreground">
+                    Unlocks once the award is verified.
+                  </p>
                 </>
               ) : (
-                <p className="mt-2 text-sm text-muted-foreground">No payout attached to this award.</p>
+                <p className="mt-2 text-sm text-muted-foreground">
+                  No payout attached to this award.
+                </p>
               )}
             </div>
           </div>

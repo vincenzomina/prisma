@@ -28,13 +28,31 @@ export function WalletButton() {
   }
 
   const label =
-    w.status === "connected" && w.address ? shortAddress(w.address) : w.status === "connecting" ? "Connecting…" : "Connect wallet";
+    w.status === "connected" && w.address
+      ? shortAddress(w.address)
+      : w.status === "connecting"
+        ? "Connecting…"
+        : "Connect wallet";
 
   return (
     <div ref={ref} className="relative">
-      <button className="btn btn-secondary h-9" onClick={() => setOpen((o) => !o)} aria-expanded={open} aria-haspopup="menu" data-status={w.status}>
-        {w.status === "connecting" ? <Loader2 className="size-4 animate-spin" /> : w.status === "connected" && w.walletIcon ? <img src={w.walletIcon} alt="" className="size-4 rounded-sm" /> : <Wallet className="size-4" />}
-        <span className={w.status === "connected" ? "font-mono text-xs" : "hidden sm:inline"}>{label}</span>
+      <button
+        className="btn btn-secondary h-9"
+        onClick={() => setOpen((o) => !o)}
+        aria-expanded={open}
+        aria-haspopup="menu"
+        data-status={w.status}
+      >
+        {w.status === "connecting" ? (
+          <Loader2 className="size-4 animate-spin" />
+        ) : w.status === "connected" && w.walletIcon ? (
+          <img src={w.walletIcon} alt="" className="size-4 rounded-sm" />
+        ) : (
+          <Wallet className="size-4" />
+        )}
+        <span className={w.status === "connected" ? "font-mono text-xs" : "hidden sm:inline"}>
+          {label}
+        </span>
       </button>
 
       {open && (
@@ -47,21 +65,38 @@ export function WalletButton() {
             <div className="space-y-1 p-2">
               <p className="text-xs text-muted-foreground">Connected via {w.walletName}</p>
               <p className="break-all font-mono text-xs">{w.address}</p>
-              <a href={explorerAddressUrl(w.address)} target="_blank" rel="noreferrer" className="btn btn-ghost mt-2 h-8 w-full justify-start px-2">
+              <a
+                href={explorerAddressUrl(w.address)}
+                target="_blank"
+                rel="noreferrer"
+                className="btn btn-ghost mt-2 h-8 w-full justify-start px-2"
+              >
                 <ExternalLink className="size-4" /> View on Explorer
               </a>
-              <button className="btn btn-ghost h-8 w-full justify-start px-2" onClick={() => { void w.disconnect(); setOpen(false); }}>
+              <button
+                className="btn btn-ghost h-8 w-full justify-start px-2"
+                onClick={() => {
+                  void w.disconnect();
+                  setOpen(false);
+                }}
+              >
                 <LogOut className="size-4" /> Disconnect
               </button>
             </div>
           ) : w.wallets.length === 0 ? (
             <p className="p-2 text-sm text-muted-foreground">
-              No Solana wallet detected. Install a browser wallet such as Phantom, Solflare or Backpack, then reload.
+              No Solana wallet detected. Install a browser wallet such as Phantom, Solflare or
+              Backpack, then reload.
             </p>
           ) : (
             <div className="space-y-1 p-1">
               {w.wallets.map((wallet) => (
-                <button key={wallet.name} className="btn btn-ghost h-10 w-full justify-start px-2" disabled={w.status === "connecting"} onClick={() => pick(wallet)}>
+                <button
+                  key={wallet.name}
+                  className="btn btn-ghost h-10 w-full justify-start px-2"
+                  disabled={w.status === "connecting"}
+                  onClick={() => pick(wallet)}
+                >
                   <img src={wallet.icon} alt="" className="size-5 rounded" />
                   {wallet.name}
                 </button>
@@ -69,7 +104,9 @@ export function WalletButton() {
             </div>
           )}
           {error && <p className="px-2 pb-2 text-xs text-destructive">{error}</p>}
-          <p className="border-t px-2 pt-2 text-[11px] text-muted-foreground">PRISMA only reads your public address. It will never ask for your seed phrase.</p>
+          <p className="border-t px-2 pt-2 text-[11px] text-muted-foreground">
+            PRISMA only reads your public address. It will never ask for your seed phrase.
+          </p>
         </div>
       )}
     </div>

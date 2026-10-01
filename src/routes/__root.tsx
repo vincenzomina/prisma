@@ -23,7 +23,9 @@ function NotFoundComponent() {
           The page you're looking for doesn't exist or has been moved.
         </p>
         <div className="mt-6">
-          <Link to="/" className="btn btn-primary">Go home</Link>
+          <Link to="/" className="btn btn-primary">
+            Go home
+          </Link>
         </div>
       </div>
     </div>
@@ -54,7 +56,9 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
           >
             Try again
           </button>
-          <a href="/" className="btn btn-secondary">Go home</a>
+          <a href="/" className="btn btn-secondary">
+            Go home
+          </a>
         </div>
       </div>
     </div>
@@ -67,7 +71,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "PRISMA — Verifiable awards. Programmable rewards." },
-      { name: "description", content: "Issue verifiable awards and deliver rewards through one infrastructure layer." },
+      {
+        name: "description",
+        content: "Issue verifiable awards and deliver rewards through one infrastructure layer.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
