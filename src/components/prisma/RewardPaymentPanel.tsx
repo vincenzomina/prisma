@@ -8,6 +8,14 @@ import { canPayAward, paymentMemo, sendAwardReward, type PaymentStep } from "@/l
 import { useWallet } from "@/lib/solana/wallet";
 import { shortAddress } from "@/lib/solana/address";
 import { explorerTxUrl } from "@/lib/solana/config";
+import { TxProgress } from "./TxProgress";
+
+const STEPS: { key: PaymentStep; label: string }[] = [
+  { key: "preparing", label: "Preparing" },
+  { key: "awaiting_signature", label: "Awaiting signature" },
+  { key: "submitting", label: "Submitting" },
+  { key: "confirming", label: "Confirming" },
+];
 
 type UiState = "not_sent" | PaymentStep | "paid" | "failed";
 const LABEL: Record<UiState, string> = {
@@ -54,7 +62,13 @@ export function RewardPaymentPanel({ award }: { award: Award }) {
         <p className="eyebrow">Reward</p>
         <span
           className={
-            paid ? "chip chip-success" : state === "failed" ? "chip text-destructive" : "chip"
+            paid
+              ? "chip chip-success"
+              : state === "failed"
+                ? "chip chip-danger"
+                : step
+                  ? "chip chip-action"
+                  : "chip"
           }
         >
           {paid && <Check className="size-3" />}
@@ -71,21 +85,28 @@ export function RewardPaymentPanel({ award }: { award: Award }) {
           target="_blank"
           rel="noreferrer"
         >
-          <span className="text-muted-foreground">Payment transaction</span>
+          <span className="text-muted-foreground">View on Solana Explorer</span>
           <span className="flex items-center gap-1 font-mono text-xs">
             {shortAddress(award.paymentTransactionSignature!)} <ExternalLink className="size-3" />
           </span>
         </a>
       ) : confirming ? (
-        <div className="mt-5 space-y-3 rounded-lg border p-4 text-sm">
-          <p>
-            Send <strong>{formatReward(award)}</strong> to{" "}
-            <span className="font-mono text-xs">{shortAddress(award.recipientWallet)}</span> on
-            Devnet?
-          </p>
-          <p className="text-xs text-muted-foreground">
-            Reference: <span className="font-mono">{paymentMemo(award.id)}</span>
-          </p>
+        <div className="mt-5 space-y-3 rounded-lg border border-primary/40 bg-primary/5 p-4 text-sm">
+          <p className="font-medium">Confirm reward payment</p>
+          <dl className="space-y-2 text-xs">
+            <div className="flex justify-between gap-3">
+              <dt className="text-muted-foreground">Amount</dt>
+              <dd className="font-medium">{formatReward(award)} · Devnet</dd>
+            </div>
+            <div className="flex justify-between gap-3">
+              <dt className="text-muted-foreground">Recipient</dt>
+              <dd className="break-all text-right font-mono">{award.recipientWallet}</dd>
+            </div>
+            <div className="flex justify-between gap-3">
+              <dt className="text-muted-foreground">Award reference</dt>
+              <dd className="break-all text-right font-mono">{paymentMemo(award.id)}</dd>
+            </div>
+          </dl>
           <div className="flex gap-2">
             <button className="btn btn-ghost h-9 flex-1" onClick={() => setConfirming(false)}>
               Cancel
@@ -97,6 +118,7 @@ export function RewardPaymentPanel({ award }: { award: Award }) {
         </div>
       ) : (
         <>
+          {step && <TxProgress steps={STEPS} current={step} />}
           <button
             className="btn btn-primary mt-5 w-full"
             disabled={!!step || !verified || !!blocked || wallet.status !== "connected"}

@@ -37,20 +37,27 @@ export function WalletButton() {
   return (
     <div ref={ref} className="relative">
       <button
-        className="btn btn-secondary h-9"
+        className="inline-flex h-8 items-center gap-2 rounded-md border px-2.5 text-xs text-muted-foreground transition-colors hover:border-white/20 hover:text-foreground"
         onClick={() => setOpen((o) => !o)}
         aria-expanded={open}
         aria-haspopup="menu"
+        aria-label={w.status === "connected" ? `Wallet ${label} on Devnet` : "Connect wallet"}
         data-status={w.status}
       >
         {w.status === "connecting" ? (
-          <Loader2 className="size-4 animate-spin" />
+          <Loader2 className="size-3.5 animate-spin" />
         ) : w.status === "connected" && w.walletIcon ? (
-          <img src={w.walletIcon} alt="" className="size-4 rounded-sm" />
+          <img src={w.walletIcon} alt="" className="size-3.5 rounded-sm" />
         ) : (
-          <Wallet className="size-4" />
+          <Wallet className="size-3.5" />
         )}
-        <span className={w.status === "connected" ? "font-mono text-xs" : "hidden sm:inline"}>
+        <span className="hidden font-mono uppercase tracking-wider sm:inline">Devnet</span>
+        <span className="hidden text-border sm:inline" aria-hidden>
+          ·
+        </span>
+        <span
+          className={w.status === "connected" ? "font-mono text-foreground" : "hidden sm:inline"}
+        >
           {label}
         </span>
       </button>

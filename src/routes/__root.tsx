@@ -18,7 +18,7 @@ function NotFoundComponent() {
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
         <p className="eyebrow">404</p>
-        <h1 className="mt-3 font-display text-5xl">Page not found</h1>
+        <h1 className="mt-3 text-4xl font-semibold tracking-tight">Page not found</h1>
         <p className="mt-3 text-sm text-muted-foreground">
           The page you're looking for doesn't exist or has been moved.
         </p>
@@ -73,7 +73,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { title: "PRISMA — Verifiable awards. Programmable rewards." },
       {
         name: "description",
-        content: "Issue verifiable awards and deliver rewards through one infrastructure layer.",
+        content:
+          "Infrastructure for trusted recognition, verifiable achievements and programmable rewards.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

@@ -11,6 +11,16 @@ import { useWallet } from "@/lib/solana/wallet";
 import { shortAddress } from "@/lib/solana/address";
 import { explorerAddressUrl, explorerTxUrl } from "@/lib/solana/config";
 import { LiveVerificationChip } from "./StatusChips";
+import { TxProgress } from "./TxProgress";
+
+const STEPS: { key: IssueStep; label: string }[] = [
+  { key: "checking", label: "Checking wallet" },
+  { key: "credential", label: "Credential setup" },
+  { key: "schema", label: "Schema setup" },
+  { key: "attestation", label: "Awaiting Award signature" },
+  { key: "confirming", label: "Confirming transaction" },
+  { key: "verifying", label: "Reading attestation from Solana" },
+];
 
 const STEP_LABEL: Record<IssueStep, string> = {
   checking: "Checking wallet…",
@@ -47,7 +57,7 @@ export function IssueAttestationPanel({ award }: { award: Award }) {
 
   return (
     <div className="surface relative overflow-hidden p-6">
-      <div className="spectrum-line absolute inset-x-0 top-0 opacity-60" />
+      <div className="spectrum-line absolute inset-x-0 top-0 opacity-50" />
       <div className="flex items-center justify-between">
         <p className="eyebrow">Verification</p>
         <LiveVerificationChip result={result} />
@@ -55,6 +65,11 @@ export function IssueAttestationPanel({ award }: { award: Award }) {
 
       {issued ? (
         <div className="mt-4 space-y-3 text-sm">
+          {result.state === "verified" && (
+            <p className="text-muted-foreground">
+              Independently re-checked against its on-chain attestation.
+            </p>
+          )}
           {result.state === "invalid" && <p className="text-destructive">{result.reason}</p>}
           {result.state === "error" && <p className="text-destructive">{result.message}</p>}
           <a
@@ -93,6 +108,7 @@ export function IssueAttestationPanel({ award }: { award: Award }) {
             award ID, program, award title, issuer name and recipient wallet are recorded — never
             the recipient's name.
           </p>
+          {step && <TxProgress steps={STEPS} current={step} />}
           <button className="btn btn-primary mt-5 w-full" disabled={!canIssue} onClick={issue}>
             {step ? (
               <Loader2 className="size-4 animate-spin" />
@@ -105,7 +121,7 @@ export function IssueAttestationPanel({ award }: { award: Award }) {
             {award.isDemo
               ? "Demo awards can't be issued. Create your own award to try it."
               : wallet.status !== "connected"
-                ? "Connect your organizer wallet (Devnet) to issue."
+                ? "Connect your organizer wallet to issue on Devnet."
                 : `Issuing as ${shortAddress(wallet.address!)} · first time needs 3 approvals, then 1.`}
           </p>
           {error && <p className="mt-3 text-sm text-destructive">{error}</p>}
