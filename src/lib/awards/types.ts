@@ -18,23 +18,23 @@ export type PaymentStatus = "not_applicable" | "not_sent" | "pending" | "paid" |
 export interface Award {
   id: string;
   title: string;
-  description?: string;
+  description?: string | undefined;
   organizationName: string;
   programName: string;
-  sponsorName?: string;
+  sponsorName?: string | undefined;
   awardType: AwardType;
   recipientName: string;
   recipientWallet: string;
   rewardType: RewardType;
-  rewardAmount?: string;
-  rewardAsset?: string;
-  rewardDescription?: string;
+  rewardAmount?: string | undefined;
+  rewardAsset?: string | undefined;
+  rewardDescription?: string | undefined;
   createdAt: string;
   verificationStatus: VerificationStatus;
-  attestationAddress?: string;
-  attestationTransactionSignature?: string;
+  attestationAddress?: string | undefined;
+  attestationTransactionSignature?: string | undefined;
   paymentStatus: PaymentStatus;
-  paymentTransactionSignature?: string;
+  paymentTransactionSignature?: string | undefined;
   isDemo?: boolean;
 }
 

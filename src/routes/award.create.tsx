@@ -32,7 +32,7 @@ function Section({ n, title, children }: { n: string; title: string; children: R
   );
 }
 
-function Field({ label, optional, error, children }: { label: string; optional?: boolean; error?: string; children: ReactNode }) {
+function Field({ label, optional, error, children }: { label: string; optional?: boolean | undefined; error?: string | undefined; children: ReactNode }) {
   return (
     <label className="block">
       <span className="field-label">
@@ -60,12 +60,12 @@ function CreateAward() {
     rewardAsset: "USDC",
     rewardDescription: "",
   });
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [errors, setErrors] = useState<Partial<Record<"programName" | "title" | "organizationName" | "recipientName" | "recipientWallet" | "rewardAmount", string>>>({});
   const set = <K extends keyof typeof f>(k: K, v: (typeof f)[K]) => setF((p) => ({ ...p, [k]: v }));
 
   function submit(e: React.FormEvent) {
     e.preventDefault();
-    const err: Record<string, string> = {};
+    const err: typeof errors = {};
     if (!f.programName.trim()) err.programName = "Program name is required";
     if (!f.title.trim()) err.title = "Award title is required";
     if (!f.organizationName.trim()) err.organizationName = "Organization is required";
