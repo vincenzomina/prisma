@@ -19,3 +19,4 @@
 - Award attestations use the Solana Attestation Service via `sas-lib` in `src/lib/solana/attestations/`; "Verified" is always derived by re-reading and checking the on-chain attestation (`verifyAwardAttestation`), never from the stored `verificationStatus` — stored fields are only a cache/pointer.
 - Each organizer wallet is its own SAS credential authority (credential `PRISMA`, schema `PRISMA_AWARD` v1, created on first issue); attestation nonce = sha256("PRISMA:"+awardId) so anyone can recompute the address — no server keys needed.
 - Reward settlement lives in `src/lib/solana/payments/` (System transfer + SPL Memo `PRISMA:<awardId>` in one tx); `paymentStatus: "paid"` is written only after confirmation and a read-back check of amount, recipient and memo — never from UI state.
+- `vite.config.ts` resolves `@solana/kit-plugin-*` to their browser builds — those packages publish no worker build, and without this the production build fails.
