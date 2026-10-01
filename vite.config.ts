@@ -27,7 +27,7 @@ export default defineConfig({
         enforce: "pre",
         resolveId(id: string) {
           const m = /^@solana\/(kit-plugin-[a-z-]+)$/.exec(id);
-          return m ? solanaBrowser(m[1]) : null;
+          return m ? solanaBrowser(m[1]!) : null;
         },
       },
     ],
