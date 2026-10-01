@@ -10,6 +10,7 @@ import {
   REWARD_TYPE_LABELS,
   type AwardType,
   type RewardType,
+  REWARD_ASSETS,
 } from "@/lib/awards/types";
 
 export const Route = createFileRoute("/award/create")({
@@ -89,7 +90,7 @@ function CreateAward() {
     recipientWallet: "",
     rewardType: "recognition_only" as RewardType,
     rewardAmount: "",
-    rewardAsset: "SOL",
+    rewardAsset: "USDC",
     rewardDescription: "",
   });
   const [errors, setErrors] = useState<
@@ -268,8 +269,24 @@ function CreateAward() {
                     />
                   </Field>
                   <Field label="Reward asset">
-                    <input className="field-input" value="SOL (Devnet)" readOnly disabled />
+                    <select
+                      className="field-input"
+                      value={f.rewardAsset}
+                      onChange={(e) => set("rewardAsset", e.target.value)}
+                    >
+                      {REWARD_ASSETS.map((a) => (
+                        <option key={a.symbol} value={a.symbol}>
+                          {a.symbol} · {a.name}
+                        </option>
+                      ))}
+                    </select>
                   </Field>
+                  {f.rewardAsset !== "SOL" && (
+                    <p className="text-xs text-muted-foreground sm:col-span-2">
+                      Only SOL rewards can be sent from PRISMA on Devnet right now. A {f.rewardAsset}{" "}
+                      reward is recorded on the award but must be paid outside PRISMA.
+                    </p>
+                  )}
                 </div>
               )}
               {f.rewardType === "non_monetary" && (
@@ -325,7 +342,7 @@ function CreateAward() {
                     <dt className="eyebrow">Reward</dt>
                     <dd className="mt-1">
                       {f.rewardType === "monetary"
-                        ? `${f.rewardAmount || "—"} SOL (Devnet)`
+                        ? `${f.rewardAmount || "—"} ${f.rewardAsset}`
                         : f.rewardType === "non_monetary"
                           ? f.rewardDescription || "Other benefit"
                           : "Recognition only"}
