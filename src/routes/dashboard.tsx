@@ -5,6 +5,7 @@ import { DemoChip, PaymentChip, VerificationChip } from "@/components/prisma/Sta
 import { DEMO_PROGRAMS } from "@/lib/awards/demo";
 import { formatReward } from "@/lib/awards/logic";
 import { useAwards } from "@/lib/awards/store";
+import type { Award } from "@/lib/awards/types";
 
 export const Route = createFileRoute("/dashboard")({
   head: () => ({
@@ -12,13 +13,12 @@ export const Route = createFileRoute("/dashboard")({
       { title: "Dashboard — PRISMA" },
       {
         name: "description",
-        content: "Manage programs, awards and rewards in your PRISMA organizer dashboard.",
+        content: "Manage Programs, Awards and rewards in your PRISMA organizer dashboard.",
       },
       { property: "og:title", content: "Dashboard — PRISMA" },
-      {
-        property: "og:description",
-        content: "Organizer dashboard for programs, awards and rewards.",
-      },
+      { property: "og:description", content: "Organizer dashboard for Programs, Awards and rewards." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: Dashboard,
@@ -26,14 +26,7 @@ export const Route = createFileRoute("/dashboard")({
 
 function Dashboard() {
   const awards = useAwards();
-  const issued = awards.filter((a) => !!a.attestationAddress).length;
-  const paid = awards.filter((a) => a.paymentStatus === "paid").length;
-
-  const metrics = [
-    { label: "Awards", value: awards.length, note: "Created" },
-    { label: "Issued awards", value: issued, note: "Each row is re-checked on Solana" },
-    { label: "Rewards delivered", value: paid, note: "Confirmed payments" },
-  ];
+  const programNames = Array.from(new Set(awards.map((a) => a.programName)));
 
   return (
     <AppShell>
@@ -41,85 +34,102 @@ function Dashboard() {
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
             <p className="eyebrow">Organizer</p>
-            <h1 className="mt-2 text-3xl font-semibold tracking-tight">PRISMA Dashboard</h1>
+            <h1 className="mt-2 text-3xl font-semibold tracking-tight">Programs</h1>
           </div>
           <Link to="/award/create" className="btn btn-primary">
             <Plus className="size-4" /> Create Award
           </Link>
         </div>
 
-        <div className="mt-10 grid gap-4 sm:grid-cols-3">
-          {metrics.map((m) => (
-            <div key={m.label} className="surface p-6">
-              <p className="eyebrow">{m.label}</p>
-              <p className="mt-4 text-4xl font-semibold tabular-nums tracking-tight">{m.value}</p>
-              <p className="mt-1 text-xs text-muted-foreground">{m.note}</p>
-            </div>
+        <div className="mt-10 space-y-14">
+          {programNames.map((name) => (
+            <ProgramBlock
+              key={name}
+              name={name}
+              awards={awards.filter((a) => a.programName === name)}
+            />
           ))}
         </div>
+      </div>
+    </AppShell>
+  );
+}
 
-        <section className="mt-12">
-          <h2 className="text-sm font-semibold">Programs</h2>
-          <div className="mt-4 grid gap-4 md:grid-cols-2">
-            {DEMO_PROGRAMS.map((p) => {
-              const count = awards.filter((a) => a.programName === p.name).length;
-              return (
-                <div key={p.name} className="surface relative overflow-hidden p-6">
-                  <div className="spectrum-line absolute inset-x-0 top-0 opacity-70" />
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <p className="font-semibold">{p.name}</p>
-                      <p className="mt-1 text-sm text-muted-foreground">
-                        {p.organization} · {p.period}
-                      </p>
-                    </div>
-                    <DemoChip />
-                  </div>
-                  <p className="mt-6 text-sm text-muted-foreground">
-                    {count} award{count === 1 ? "" : "s"}
-                  </p>
-                </div>
-              );
-            })}
+function ProgramBlock({ name, awards }: { name: string; awards: Award[] }) {
+  const meta = DEMO_PROGRAMS.find((p) => p.name === name);
+  const org = meta?.organization ?? awards[0]?.organizationName;
+  const issued = awards.filter((a) => !!a.attestationAddress).length;
+  const paid = awards.filter((a) => a.paymentStatus === "paid").length;
+  const allDemo = awards.every((a) => a.isDemo);
+
+  return (
+    <section aria-label={name}>
+      <div className="credential p-6 sm:p-8">
+        <div className="flex flex-wrap items-start justify-between gap-4">
+          <div>
+            <p className="eyebrow">Program</p>
+            <h2 className="mt-2 text-2xl font-semibold uppercase tracking-tight">{name}</h2>
+            <p className="mt-1 text-sm text-muted-foreground">
+              {org}
+              {meta?.period ? ` · ${meta.period}` : ""}
+            </p>
           </div>
-        </section>
+          {allDemo && <DemoChip />}
+        </div>
+        <dl className="mt-8 flex flex-wrap gap-x-12 gap-y-4">
+          <Metric label="Awards" value={awards.length} />
+          <Metric label="Issued" value={issued} hint="Re-checked live on Solana" />
+          <Metric label="Rewards delivered" value={paid} hint="Confirmed payments" />
+        </dl>
+      </div>
 
-        <section className="mt-12">
-          <h2 className="text-sm font-semibold">Recent awards</h2>
-          <div className="surface mt-4 overflow-hidden">
-            <div className="hidden grid-cols-[2fr_1.2fr_1.4fr_1fr_1fr_auto] gap-4 border-b px-6 py-3 md:grid">
-              {["Award", "Recipient", "Program", "Verification", "Reward", ""].map((h) => (
-                <span key={h} className="eyebrow">
-                  {h}
-                </span>
-              ))}
-            </div>
-            {awards.map((a) => (
+      <div className="mt-2">
+        <div className="hidden grid-cols-[2fr_1.3fr_1fr_1fr_auto] gap-4 px-4 py-3 md:grid">
+          {["Award", "Recipient", "Verification", "Reward", ""].map((h) => (
+            <span key={h} className="eyebrow">
+              {h}
+            </span>
+          ))}
+        </div>
+        <ul>
+          {awards.map((a) => (
+            <li key={a.id} className="border-b last:border-0">
               <Link
-                key={a.id}
                 to="/award/$id/manage"
                 params={{ id: a.id }}
-                className="grid gap-2 border-b px-6 py-4 transition-colors last:border-0 hover:bg-secondary/60 md:grid-cols-[2fr_1.2fr_1.4fr_1fr_1fr_auto] md:items-center md:gap-4"
+                className="grid gap-3 rounded-md px-4 py-4 transition-colors hover:bg-secondary/60 md:grid-cols-[2fr_1.3fr_1fr_1fr_auto] md:items-center md:gap-4"
               >
-                <div>
+                <div className="min-w-0">
                   <p className="font-medium">{a.title}</p>
-                  <p className="font-mono text-xs text-muted-foreground">{a.id}</p>
+                  <p className="truncate font-mono text-[11px] text-muted-foreground">{a.id}</p>
                 </div>
-                <p className="text-sm">{a.recipientName}</p>
-                <p className="text-sm text-muted-foreground">{a.programName}</p>
+                <p className="text-sm">
+                  <span className="text-muted-foreground md:hidden">To </span>
+                  {a.recipientName}
+                </p>
                 <div>
                   <VerificationChip award={a} />
                 </div>
-                <div className="flex flex-col items-start gap-1">
+                <div className="flex flex-wrap items-center gap-2 md:flex-col md:items-start md:gap-1">
                   <span className="text-sm">{formatReward(a)}</span>
                   {a.rewardType === "monetary" && <PaymentChip award={a} />}
                 </div>
                 <ArrowUpRight className="hidden size-4 text-muted-foreground md:block" />
               </Link>
-            ))}
-          </div>
-        </section>
+            </li>
+          ))}
+        </ul>
       </div>
-    </AppShell>
+    </section>
+  );
+}
+
+function Metric({ label, value, hint }: { label: string; value: number; hint?: string }) {
+  return (
+    <div>
+      <dt className="eyebrow">{label}</dt>
+      <dd className="mt-1 text-3xl font-semibold tabular-nums tracking-tight">{value}</dd>
+      {hint && <dd className="text-xs text-muted-foreground">{hint}</dd>}
+    </div>
   );
 }
