@@ -62,3 +62,15 @@ export const REWARD_TYPE_LABELS: Record<RewardType, string> = {
   monetary: "Monetary reward",
   non_monetary: "Other benefit",
 };
+
+/** Solana reward assets an organizer can choose. Only SOL is payable on Devnet today. */
+export const REWARD_ASSETS = [
+  { symbol: "USDC", name: "USD Coin" },
+  { symbol: "SOL", name: "Solana" },
+  { symbol: "USDT", name: "Tether USD" },
+  { symbol: "USDG", name: "Global Dollar" },
+  { symbol: "PYUSD", name: "PayPal USD" },
+  { symbol: "EURC", name: "Euro Coin" },
+  { symbol: "JUP", name: "Jupiter" },
+  { symbol: "BONK", name: "Bonk" },
+] as const;
