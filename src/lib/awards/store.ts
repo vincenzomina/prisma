@@ -32,6 +32,26 @@ export function saveAward(award: Award) {
   listeners.forEach((l) => l());
 }
 
+/**
+ * Records a CONFIRMED and re-verified SAS attestation for a local award.
+ * Callers must pass data returned by issueAwardAttestation only.
+ */
+export function recordConfirmedAttestation(
+  id: string,
+  r: { attestationAddress: string; attestationAuthority: string; signature: string | null },
+) {
+  const local = readLocal();
+  const award = local.find((a) => a.id === id);
+  if (!award) throw new Error("Only locally created awards can be issued.");
+  saveAward({
+    ...award,
+    verificationStatus: "verified",
+    attestationAddress: r.attestationAddress,
+    attestationAuthority: r.attestationAuthority,
+    attestationTransactionSignature: r.signature ?? award.attestationTransactionSignature,
+  });
+}
+
 function subscribe(l: () => void) {
   listeners.add(l);
   return () => listeners.delete(l);

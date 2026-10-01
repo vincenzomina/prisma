@@ -4,7 +4,10 @@ import { useState } from "react";
 import { PrismaMark } from "@/components/prisma/PrismaMark";
 import { AwardMissing } from "@/components/prisma/AwardMissing";
 import { AWARD_TYPE_LABELS } from "@/lib/awards/types";
-import { formatReward, paymentLabel, verificationLabel } from "@/lib/awards/logic";
+import { formatReward, paymentLabel } from "@/lib/awards/logic";
+import { liveLabel, useAttestationVerification } from "@/lib/solana/attestations";
+import { explorerAddressUrl, explorerTxUrl } from "@/lib/solana/config";
+import { shortAddress } from "@/lib/solana/address";
 import { useAward } from "@/lib/awards/store";
 
 export const Route = createFileRoute("/award/$id/")({
@@ -30,9 +33,11 @@ function PublicAward() {
   const { id } = Route.useParams();
   const award = useAward(id);
   const [copied, setCopied] = useState(false);
+  const { result } = useAttestationVerification(award);
   if (!award) return <AwardMissing id={id} />;
 
-  const verified = award.verificationStatus === "verified";
+  // Derived from the live on-chain attestation, not a stored flag.
+  const verified = result.state === "verified";
   const paid = award.paymentStatus === "paid";
 
   return (
@@ -93,12 +98,20 @@ function PublicAward() {
                 className={`mt-2 flex items-center gap-2 font-medium ${verified ? "text-success" : ""}`}
               >
                 {verified && <Check className="size-4" />}
-                {verified ? "Verified on Solana" : verificationLabel(award)}
+                {liveLabel(result)}
               </p>
               <p className="mt-1 text-sm text-muted-foreground">
                 {verified
-                  ? "The authenticity of this award is publicly recorded."
-                  : "This award has not been issued yet, so its authenticity cannot be confirmed."}
+                  ? "This award's attestation was read from Solana Devnet just now and matches every field."
+                  : result.state === "checking"
+                    ? "Reading the attestation from Solana…"
+                    : result.state === "invalid"
+                      ? result.reason
+                      : result.state === "error"
+                        ? "Solana could not be reached. Try again shortly."
+                        : result.state === "not_found"
+                          ? "No attestation exists on Solana for this award."
+                          : "This award has not been issued yet, so its authenticity cannot be confirmed."}
               </p>
             </div>
             <div className="p-7">
@@ -111,6 +124,27 @@ function PublicAward() {
               )}
             </div>
           </div>
+
+          {award.attestationAddress && (
+            <dl className="grid gap-3 border-t p-7 text-sm sm:grid-cols-2">
+              <div>
+                <dt className="eyebrow">Attestation · Devnet</dt>
+                <dd className="mt-1 break-all font-mono text-xs">{award.attestationAddress}</dd>
+              </div>
+              <div>
+                <dt className="eyebrow">Transaction signature</dt>
+                <dd className="mt-1 break-all font-mono text-xs">
+                  {award.attestationTransactionSignature ?? "—"}
+                </dd>
+              </div>
+              {result.state === "verified" && (
+                <div className="sm:col-span-2">
+                  <dt className="eyebrow">Signed by issuer wallet</dt>
+                  <dd className="mt-1 font-mono text-xs">{shortAddress(result.signer)}</dd>
+                </div>
+              )}
+            </dl>
+          )}
 
           <div className="flex flex-col gap-4 border-t bg-secondary/50 p-7 sm:flex-row sm:items-center sm:justify-between">
             <div>
@@ -128,15 +162,34 @@ function PublicAward() {
               </button>
             </div>
             <div className="flex gap-2">
-              <button className="btn btn-secondary h-9" disabled={!award.attestationAddress}>
-                View attestation
-              </button>
-              <button
-                className="btn btn-secondary h-9"
-                disabled={!award.attestationTransactionSignature}
-              >
-                View transaction
-              </button>
+              {award.attestationAddress ? (
+                <a
+                  className="btn btn-secondary h-9"
+                  href={explorerAddressUrl(award.attestationAddress)}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  View attestation
+                </a>
+              ) : (
+                <button className="btn btn-secondary h-9" disabled>
+                  View attestation
+                </button>
+              )}
+              {award.attestationTransactionSignature ? (
+                <a
+                  className="btn btn-secondary h-9"
+                  href={explorerTxUrl(award.attestationTransactionSignature)}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  View transaction
+                </a>
+              ) : (
+                <button className="btn btn-secondary h-9" disabled>
+                  View transaction
+                </button>
+              )}
             </div>
           </div>
         </article>

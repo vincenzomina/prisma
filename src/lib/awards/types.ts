@@ -27,6 +27,8 @@ export interface Award {
   verificationStatus: VerificationStatus;
   attestationAddress?: string | undefined;
   attestationTransactionSignature?: string | undefined;
+  /** Organizer wallet that is the SAS credential authority. */
+  attestationAuthority?: string | undefined;
   paymentStatus: PaymentStatus;
   paymentTransactionSignature?: string | undefined;
   isDemo?: boolean;
@@ -40,6 +42,7 @@ export type AwardInput = Omit<
   | "paymentStatus"
   | "attestationAddress"
   | "attestationTransactionSignature"
+  | "attestationAuthority"
   | "paymentTransactionSignature"
   | "isDemo"
 >;

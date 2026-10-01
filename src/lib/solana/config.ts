@@ -7,3 +7,7 @@ export const WALLET_STORAGE_KEY = "prisma:wallet";
 export function explorerAddressUrl(address: string) {
   return `https://explorer.solana.com/address/${address}?cluster=${SOLANA_CLUSTER}`;
 }
+
+export function explorerTxUrl(signature: string) {
+  return `https://explorer.solana.com/tx/${signature}?cluster=${SOLANA_CLUSTER}`;
+}

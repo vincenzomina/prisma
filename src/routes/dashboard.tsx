@@ -26,12 +26,12 @@ export const Route = createFileRoute("/dashboard")({
 
 function Dashboard() {
   const awards = useAwards();
-  const verified = awards.filter((a) => a.verificationStatus === "verified").length;
+  const issued = awards.filter((a) => !!a.attestationAddress).length;
   const paid = awards.filter((a) => a.paymentStatus === "paid").length;
 
   const metrics = [
     { label: "Awards", value: awards.length, note: "Created" },
-    { label: "Verified awards", value: verified, note: "Confirmed on-chain" },
+    { label: "Issued awards", value: issued, note: "Each row is re-checked on Solana" },
     { label: "Rewards delivered", value: paid, note: "Confirmed payments" },
   ];
 
