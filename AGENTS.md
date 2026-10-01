@@ -16,3 +16,5 @@
 - Styles come from semantic classes/tokens in `src/styles.css` (`.btn-*`, `.surface`, `.chip-*`, `.field-input`) — keeps the design system in one place.
 - Solana wallet logic lives in `src/lib/solana/` (config, address, wallet) using `@solana/kit` + `@solana/kit-plugin-wallet` (Wallet Standard); UI only calls `useWallet()` — official current tooling, keeps wallet code out of components.
 - The Solana client is created lazily in the browser, never at module scope — the worker runtime forbids global-scope side effects and wallets are browser-only.
+- Award attestations use the Solana Attestation Service via `sas-lib` in `src/lib/solana/attestations/`; "Verified" is always derived by re-reading and checking the on-chain attestation (`verifyAwardAttestation`), never from the stored `verificationStatus` — stored fields are only a cache/pointer.
+- Each organizer wallet is its own SAS credential authority (credential `PRISMA`, schema `PRISMA_AWARD` v1, created on first issue); attestation nonce = sha256("PRISMA:"+awardId) so anyone can recompute the address — no server keys needed.
