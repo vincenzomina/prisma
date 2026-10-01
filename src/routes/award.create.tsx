@@ -283,8 +283,9 @@ function CreateAward() {
                   </Field>
                   {f.rewardAsset !== "SOL" && (
                     <p className="text-xs text-muted-foreground sm:col-span-2">
-                      Only SOL rewards can be sent from PRISMA on Devnet right now. A {f.rewardAsset}{" "}
-                      reward is recorded on the award but must be paid outside PRISMA.
+                      During the Devnet beta, PRISMA can only send rewards in SOL. A {f.rewardAsset}{" "}
+                      reward is recorded on the award but must be paid outside PRISMA for now — the
+                      official release will settle rewards in every supported Solana asset directly from PRISMA.
                     </p>
                   )}
                 </div>
