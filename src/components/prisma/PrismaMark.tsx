@@ -1,11 +1,10 @@
 import { cn } from "@/lib/utils";
-import logo from "@/assets/prisma-logo.png.asset.json";
 
-/** Official PRISMA logo (3D neon prism). */
+/** Official PRISMA logo (3D neon prism), served from public/prisma-logo.png. */
 export function PrismaMark({ className }: { className?: string }) {
   return (
     <img
-      src={logo.url}
+      src="/prisma-logo.png"
       alt=""
       aria-hidden
       draggable={false}
