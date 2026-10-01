@@ -1,10 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowUpRight, Plus } from "lucide-react";
+import { useState } from "react";
+import { ArrowUpRight, Trash2 } from "lucide-react";
 import { AppShell } from "@/components/prisma/AppShell";
 import { DemoChip, PaymentChip, VerificationChip } from "@/components/prisma/StatusChips";
 import { DEMO_PROGRAMS } from "@/lib/awards/demo";
 import { formatReward } from "@/lib/awards/logic";
-import { useAwards } from "@/lib/awards/store";
+import { deleteAward, useAwards } from "@/lib/awards/store";
 import type { Award } from "@/lib/awards/types";
 
 export const Route = createFileRoute("/dashboard")({
