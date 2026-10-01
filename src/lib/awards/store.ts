@@ -52,6 +52,13 @@ export function recordConfirmedAttestation(
   });
 }
 
+/** Records a CONFIRMED, read-back-checked reward payment (from sendAwardReward only). */
+export function recordConfirmedPayment(id: string, signature: string) {
+  const award = readLocal().find((a) => a.id === id);
+  if (!award) throw new Error("Only locally created awards can be paid.");
+  saveAward({ ...award, paymentStatus: "paid", paymentTransactionSignature: signature });
+}
+
 function subscribe(l: () => void) {
   listeners.add(l);
   return () => listeners.delete(l);

@@ -78,7 +78,7 @@ function CreateAward() {
     recipientWallet: "",
     rewardType: "recognition_only" as RewardType,
     rewardAmount: "",
-    rewardAsset: "USDC",
+    rewardAsset: "SOL",
     rewardDescription: "",
   });
   const [errors, setErrors] = useState<
@@ -106,8 +106,11 @@ function CreateAward() {
     if (!f.recipientWallet.trim()) err.recipientWallet = "Recipient wallet is required";
     else if (!isValidSolanaAddress(f.recipientWallet))
       err.recipientWallet = "Not a valid Solana address (must be a 32-byte base58 public key)";
-    if (f.rewardType === "monetary" && !(Number(f.rewardAmount) > 0))
-      err.rewardAmount = "Enter an amount greater than 0";
+    if (
+      f.rewardType === "monetary" &&
+      (!(Number(f.rewardAmount) > 0) || !/^\d+(\.\d{1,9})?$/.test(f.rewardAmount.trim()))
+    )
+      err.rewardAmount = "Enter an amount greater than 0 (up to 9 decimals)";
     setErrors(err);
     if (Object.keys(err).length) return;
 
@@ -253,11 +256,7 @@ function CreateAward() {
                   />
                 </Field>
                 <Field label="Reward asset">
-                  <input
-                    className="field-input"
-                    value={f.rewardAsset}
-                    onChange={(e) => set("rewardAsset", e.target.value)}
-                  />
+                  <input className="field-input" value="SOL (Devnet)" readOnly disabled />
                 </Field>
               </div>
             )}

@@ -116,11 +116,38 @@ function PublicAward() {
             </div>
             <div className="p-7">
               <p className="eyebrow">Reward</p>
-              <p className="mt-2 text-xl font-semibold tracking-tight">{formatReward(award)}</p>
+              <p className="mt-2 text-xl font-semibold tracking-tight">
+                {award.rewardType === "monetary"
+                  ? (award.rewardAmount ?? "—")
+                  : formatReward(award)}
+              </p>
               {award.rewardType === "monetary" && (
-                <p className={`mt-1 text-sm ${paid ? "text-success" : "text-muted-foreground"}`}>
-                  {paymentLabel(award)}
-                </p>
+                <>
+                  <p className="text-sm text-muted-foreground">
+                    Asset: {award.rewardAsset === "SOL" ? "SOL (Devnet)" : award.rewardAsset}
+                  </p>
+                  <p
+                    className={`mt-1 flex items-center gap-1.5 text-sm ${paid ? "text-success" : "text-muted-foreground"}`}
+                  >
+                    {paid && <Check className="size-4" />}
+                    {paid ? "Paid" : paymentLabel(award)}
+                  </p>
+                  {paid && award.paymentTransactionSignature && (
+                    <>
+                      <p className="mt-2 break-all font-mono text-xs">
+                        {award.paymentTransactionSignature}
+                      </p>
+                      <a
+                        className="btn btn-secondary mt-3 h-8"
+                        href={explorerTxUrl(award.paymentTransactionSignature)}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        View Transaction · Solana Devnet Explorer
+                      </a>
+                    </>
+                  )}
+                </>
               )}
             </div>
           </div>
