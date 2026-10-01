@@ -73,7 +73,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { title: "PRISMA — Verifiable awards. Programmable rewards." },
       {
         name: "description",
-        content: "Infrastructure for trusted recognition, verifiable achievements and programmable rewards.",
+        content:
+          "Infrastructure for trusted recognition, verifiable achievements and programmable rewards.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

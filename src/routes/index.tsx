@@ -222,9 +222,16 @@ function FlowRow({
   return (
     <div className="relative flex items-center gap-4 py-2.5">
       {!last && (
-        <span className="absolute left-[4px] top-[26px] h-[calc(100%-10px)] w-px bg-border" aria-hidden />
+        <span
+          className="absolute left-[4px] top-[26px] h-[calc(100%-10px)] w-px bg-border"
+          aria-hidden
+        />
       )}
-      <span className="size-[9px] shrink-0 rounded-full" style={{ background: color }} aria-hidden />
+      <span
+        className="size-[9px] shrink-0 rounded-full"
+        style={{ background: color }}
+        aria-hidden
+      />
       <div className="min-w-0 flex-1">
         <p className="eyebrow">{label}</p>
         <p className="truncate text-sm font-medium">{value}</p>

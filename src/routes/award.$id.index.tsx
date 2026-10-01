@@ -1,5 +1,14 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { AlertCircle, Check, ChevronDown, Circle, Copy, ExternalLink, Link2, Share2 } from "lucide-react";
+import {
+  AlertCircle,
+  Check,
+  ChevronDown,
+  Circle,
+  Copy,
+  ExternalLink,
+  Link2,
+  Share2,
+} from "lucide-react";
 import { useState } from "react";
 import { PrismaMark } from "@/components/prisma/PrismaMark";
 import { AwardMissing } from "@/components/prisma/AwardMissing";
@@ -53,7 +62,8 @@ function PublicAward() {
 
   // Derived from the live on-chain attestation, never from a stored flag.
   const verified = result.state === "verified";
-  const failed = result.state === "invalid" || result.state === "not_found" || result.state === "error";
+  const failed =
+    result.state === "invalid" || result.state === "not_found" || result.state === "error";
   const paid = award.paymentStatus === "paid" && !!award.paymentTransactionSignature;
   const canShare = typeof navigator !== "undefined" && "share" in navigator;
 
@@ -86,9 +96,7 @@ function PublicAward() {
 
         {/* Credential — the achievement comes first */}
         <article className="credential animate-fade-up mt-8 px-6 pb-12 pt-12 text-center sm:px-14 md:pt-16">
-          <p
-            className={`eyebrow inline-flex items-center gap-2 ${verified ? "text-success" : ""}`}
-          >
+          <p className={`eyebrow inline-flex items-center gap-2 ${verified ? "text-success" : ""}`}>
             {verified ? <Check className="size-3.5" /> : <PrismaMark className="size-3.5" />}
             {verified ? "Verified Award" : "Award"}
           </p>

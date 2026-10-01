@@ -18,7 +18,13 @@ export function PrismaMark({ className }: { className?: string }) {
         </linearGradient>
       </defs>
       {/* incoming beam */}
-      <path d="M1 13.2 L8.6 11.4" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" opacity="0.55" />
+      <path
+        d="M1 13.2 L8.6 11.4"
+        stroke="currentColor"
+        strokeWidth="1.3"
+        strokeLinecap="round"
+        opacity="0.55"
+      />
       {/* prism */}
       <path
         d="M12 3 L20 19 H4 Z"

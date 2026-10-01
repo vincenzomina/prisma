@@ -154,190 +154,190 @@ function CreateAward() {
         </p>
 
         <div className="mt-10 grid gap-10 lg:grid-cols-[1fr_340px]">
-        <form onSubmit={submit} noValidate className="min-w-0">
-          <Section n="01" title="Program">
-            <Field label="Program name" error={errors.programName}>
-              <input
-                className="field-input"
-                aria-invalid={!!errors.programName}
-                value={f.programName}
-                onChange={(e) => set("programName", e.target.value)}
-              />
-            </Field>
-          </Section>
+          <form onSubmit={submit} noValidate className="min-w-0">
+            <Section n="01" title="Program">
+              <Field label="Program name" error={errors.programName}>
+                <input
+                  className="field-input"
+                  aria-invalid={!!errors.programName}
+                  value={f.programName}
+                  onChange={(e) => set("programName", e.target.value)}
+                />
+              </Field>
+            </Section>
 
-          <Section n="02" title="Award">
-            <Field label="Award title" error={errors.title}>
-              <input
-                className="field-input"
-                aria-invalid={!!errors.title}
-                placeholder="e.g. Tesla Challenge Winner"
-                value={f.title}
-                onChange={(e) => set("title", e.target.value)}
-              />
-            </Field>
-            <div>
-              <span className="field-label">Award type</span>
-              <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-                {awardTypes.map((t) => (
+            <Section n="02" title="Award">
+              <Field label="Award title" error={errors.title}>
+                <input
+                  className="field-input"
+                  aria-invalid={!!errors.title}
+                  placeholder="e.g. Tesla Challenge Winner"
+                  value={f.title}
+                  onChange={(e) => set("title", e.target.value)}
+                />
+              </Field>
+              <div>
+                <span className="field-label">Award type</span>
+                <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+                  {awardTypes.map((t) => (
+                    <button
+                      type="button"
+                      key={t}
+                      className="option-tile"
+                      data-active={f.awardType === t}
+                      onClick={() => set("awardType", t)}
+                    >
+                      {AWARD_TYPE_LABELS[t]}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <Field label="Description" optional>
+                <textarea
+                  rows={3}
+                  className="field-input"
+                  value={f.description}
+                  onChange={(e) => set("description", e.target.value)}
+                />
+              </Field>
+            </Section>
+
+            <Section n="03" title="Issuer">
+              <Field label="Organization" error={errors.organizationName}>
+                <input
+                  className="field-input"
+                  aria-invalid={!!errors.organizationName}
+                  value={f.organizationName}
+                  onChange={(e) => set("organizationName", e.target.value)}
+                />
+              </Field>
+              <Field label="Sponsor" optional>
+                <input
+                  className="field-input"
+                  placeholder="e.g. Tesla"
+                  value={f.sponsorName}
+                  onChange={(e) => set("sponsorName", e.target.value)}
+                />
+              </Field>
+            </Section>
+
+            <Section n="04" title="Recipient">
+              <Field label="Recipient name" error={errors.recipientName}>
+                <input
+                  className="field-input"
+                  aria-invalid={!!errors.recipientName}
+                  value={f.recipientName}
+                  onChange={(e) => set("recipientName", e.target.value)}
+                />
+              </Field>
+              <Field label="Recipient Solana wallet" error={errors.recipientWallet}>
+                <input
+                  className="field-input font-mono text-[13px]"
+                  aria-invalid={!!errors.recipientWallet}
+                  placeholder="Base58 address"
+                  value={f.recipientWallet}
+                  onChange={(e) => set("recipientWallet", e.target.value)}
+                />
+              </Field>
+            </Section>
+
+            <Section n="05" title="Reward">
+              <div className="grid gap-2 sm:grid-cols-3">
+                {rewardTypes.map((t) => (
                   <button
                     type="button"
                     key={t}
                     className="option-tile"
-                    data-active={f.awardType === t}
-                    onClick={() => set("awardType", t)}
+                    data-active={f.rewardType === t}
+                    onClick={() => set("rewardType", t)}
                   >
-                    {AWARD_TYPE_LABELS[t]}
+                    {REWARD_TYPE_LABELS[t]}
                   </button>
                 ))}
               </div>
-            </div>
-            <Field label="Description" optional>
-              <textarea
-                rows={3}
-                className="field-input"
-                value={f.description}
-                onChange={(e) => set("description", e.target.value)}
-              />
-            </Field>
-          </Section>
-
-          <Section n="03" title="Issuer">
-            <Field label="Organization" error={errors.organizationName}>
-              <input
-                className="field-input"
-                aria-invalid={!!errors.organizationName}
-                value={f.organizationName}
-                onChange={(e) => set("organizationName", e.target.value)}
-              />
-            </Field>
-            <Field label="Sponsor" optional>
-              <input
-                className="field-input"
-                placeholder="e.g. Tesla"
-                value={f.sponsorName}
-                onChange={(e) => set("sponsorName", e.target.value)}
-              />
-            </Field>
-          </Section>
-
-          <Section n="04" title="Recipient">
-            <Field label="Recipient name" error={errors.recipientName}>
-              <input
-                className="field-input"
-                aria-invalid={!!errors.recipientName}
-                value={f.recipientName}
-                onChange={(e) => set("recipientName", e.target.value)}
-              />
-            </Field>
-            <Field label="Recipient Solana wallet" error={errors.recipientWallet}>
-              <input
-                className="field-input font-mono text-[13px]"
-                aria-invalid={!!errors.recipientWallet}
-                placeholder="Base58 address"
-                value={f.recipientWallet}
-                onChange={(e) => set("recipientWallet", e.target.value)}
-              />
-            </Field>
-          </Section>
-
-          <Section n="05" title="Reward">
-            <div className="grid gap-2 sm:grid-cols-3">
-              {rewardTypes.map((t) => (
-                <button
-                  type="button"
-                  key={t}
-                  className="option-tile"
-                  data-active={f.rewardType === t}
-                  onClick={() => set("rewardType", t)}
-                >
-                  {REWARD_TYPE_LABELS[t]}
-                </button>
-              ))}
-            </div>
-            {f.rewardType === "monetary" && (
-              <div className="grid gap-4 sm:grid-cols-[1fr_160px]">
-                <Field label="Reward amount" error={errors.rewardAmount}>
+              {f.rewardType === "monetary" && (
+                <div className="grid gap-4 sm:grid-cols-[1fr_160px]">
+                  <Field label="Reward amount" error={errors.rewardAmount}>
+                    <input
+                      inputMode="decimal"
+                      className="field-input"
+                      aria-invalid={!!errors.rewardAmount}
+                      placeholder="500"
+                      value={f.rewardAmount}
+                      onChange={(e) => set("rewardAmount", e.target.value)}
+                    />
+                  </Field>
+                  <Field label="Reward asset">
+                    <input className="field-input" value="SOL (Devnet)" readOnly disabled />
+                  </Field>
+                </div>
+              )}
+              {f.rewardType === "non_monetary" && (
+                <Field label="Benefit" optional>
                   <input
-                    inputMode="decimal"
                     className="field-input"
-                    aria-invalid={!!errors.rewardAmount}
-                    placeholder="500"
-                    value={f.rewardAmount}
-                    onChange={(e) => set("rewardAmount", e.target.value)}
+                    placeholder="e.g. Accelerator interview"
+                    value={f.rewardDescription}
+                    onChange={(e) => set("rewardDescription", e.target.value)}
                   />
                 </Field>
-                <Field label="Reward asset">
-                  <input className="field-input" value="SOL (Devnet)" readOnly disabled />
-                </Field>
-              </div>
-            )}
-            {f.rewardType === "non_monetary" && (
-              <Field label="Benefit" optional>
-                <input
-                  className="field-input"
-                  placeholder="e.g. Accelerator interview"
-                  value={f.rewardDescription}
-                  onChange={(e) => set("rewardDescription", e.target.value)}
-                />
-              </Field>
-            )}
-          </Section>
+              )}
+            </Section>
 
-          <div className="flex items-center justify-end gap-3 border-t py-6">
-            <button type="submit" className="btn btn-primary h-11 px-6">
-              Create Award
-            </button>
-          </div>
-        </form>
-        <aside className="hidden lg:block" aria-label="Award preview">
-          <div className="sticky top-24">
-            <p className="eyebrow mb-3">Live preview</p>
-            <div className="credential p-6">
-              <div className="flex items-center justify-between">
-                <span className="flex items-center gap-2">
-                  <PrismaMark className="size-4" />
-                  <span className="eyebrow">Draft Award</span>
-                </span>
-                <span className="chip">
-                  <Circle className="size-2" /> Not issued
-                </span>
-              </div>
-              <p className="mt-8 eyebrow truncate">{f.programName || "Program"}</p>
-              <h3 className="mt-2 break-words text-2xl font-semibold tracking-tight">
-                {f.title || <span className="text-muted-foreground/60">Award title</span>}
-              </h3>
-              <p className="mt-6 text-xs text-muted-foreground">Awarded to</p>
-              <p className="break-words font-display text-2xl">
-                {f.recipientName || <span className="text-muted-foreground/60">Recipient</span>}
-              </p>
-              <div className="hairline mt-6" />
-              <dl className="mt-5 grid grid-cols-2 gap-4 text-sm">
-                <div className="min-w-0">
-                  <dt className="eyebrow">Issued by</dt>
-                  <dd className="mt-1 truncate">{f.organizationName || "—"}</dd>
-                </div>
-                <div className="min-w-0">
-                  <dt className="eyebrow">Sponsor</dt>
-                  <dd className="mt-1 truncate">{f.sponsorName || "—"}</dd>
-                </div>
-                <div className="col-span-2">
-                  <dt className="eyebrow">Reward</dt>
-                  <dd className="mt-1">
-                    {f.rewardType === "monetary"
-                      ? `${f.rewardAmount || "—"} SOL (Devnet)`
-                      : f.rewardType === "non_monetary"
-                        ? f.rewardDescription || "Other benefit"
-                        : "Recognition only"}
-                  </dd>
-                </div>
-              </dl>
+            <div className="flex items-center justify-end gap-3 border-t py-6">
+              <button type="submit" className="btn btn-primary h-11 px-6">
+                Create Award
+              </button>
             </div>
-            <p className="mt-3 text-xs text-muted-foreground">
-              Verification appears only after the Award is issued on Solana.
-            </p>
-          </div>
-        </aside>
+          </form>
+          <aside className="hidden lg:block" aria-label="Award preview">
+            <div className="sticky top-24">
+              <p className="eyebrow mb-3">Live preview</p>
+              <div className="credential p-6">
+                <div className="flex items-center justify-between">
+                  <span className="flex items-center gap-2">
+                    <PrismaMark className="size-4" />
+                    <span className="eyebrow">Draft Award</span>
+                  </span>
+                  <span className="chip">
+                    <Circle className="size-2" /> Not issued
+                  </span>
+                </div>
+                <p className="mt-8 eyebrow truncate">{f.programName || "Program"}</p>
+                <h3 className="mt-2 break-words text-2xl font-semibold tracking-tight">
+                  {f.title || <span className="text-muted-foreground/60">Award title</span>}
+                </h3>
+                <p className="mt-6 text-xs text-muted-foreground">Awarded to</p>
+                <p className="break-words font-display text-2xl">
+                  {f.recipientName || <span className="text-muted-foreground/60">Recipient</span>}
+                </p>
+                <div className="hairline mt-6" />
+                <dl className="mt-5 grid grid-cols-2 gap-4 text-sm">
+                  <div className="min-w-0">
+                    <dt className="eyebrow">Issued by</dt>
+                    <dd className="mt-1 truncate">{f.organizationName || "—"}</dd>
+                  </div>
+                  <div className="min-w-0">
+                    <dt className="eyebrow">Sponsor</dt>
+                    <dd className="mt-1 truncate">{f.sponsorName || "—"}</dd>
+                  </div>
+                  <div className="col-span-2">
+                    <dt className="eyebrow">Reward</dt>
+                    <dd className="mt-1">
+                      {f.rewardType === "monetary"
+                        ? `${f.rewardAmount || "—"} SOL (Devnet)`
+                        : f.rewardType === "non_monetary"
+                          ? f.rewardDescription || "Other benefit"
+                          : "Recognition only"}
+                    </dd>
+                  </div>
+                </dl>
+              </div>
+              <p className="mt-3 text-xs text-muted-foreground">
+                Verification appears only after the Award is issued on Solana.
+              </p>
+            </div>
+          </aside>
         </div>
       </div>
     </AppShell>

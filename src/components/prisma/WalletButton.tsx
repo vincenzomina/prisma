@@ -55,7 +55,9 @@ export function WalletButton() {
         <span className="hidden text-border sm:inline" aria-hidden>
           ·
         </span>
-        <span className={w.status === "connected" ? "font-mono text-foreground" : "hidden sm:inline"}>
+        <span
+          className={w.status === "connected" ? "font-mono text-foreground" : "hidden sm:inline"}
+        >
           {label}
         </span>
       </button>

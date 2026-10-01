@@ -16,7 +16,10 @@ export const Route = createFileRoute("/dashboard")({
         content: "Manage Programs, Awards and rewards in your PRISMA organizer dashboard.",
       },
       { property: "og:title", content: "Dashboard — PRISMA" },
-      { property: "og:description", content: "Organizer dashboard for Programs, Awards and rewards." },
+      {
+        property: "og:description",
+        content: "Organizer dashboard for Programs, Awards and rewards.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
